@@ -4,6 +4,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { t } from 'react-native-tailwindcss';
+import { Counter } from '../components/features/counter/Counter';
 
 export default function TabOneScreen({
 	navigation,
@@ -17,6 +18,7 @@ export default function TabOneScreen({
 				darkColor="rgba(255,255,255,0.1)"
 			/>
 			<EditScreenInfo path="/screens/TabOneScreen.tsx" />
+			<Counter />
 		</View>
 	);
 }
