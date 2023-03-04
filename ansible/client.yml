@@ -1,0 +1,73 @@
+- hosts: client
+  become: true
+  become_method: sudo
+  remote_user: mipu7431
+  vars_files:
+    - variables.yml
+  tasks:
+    - name: Upgrade all apt packages
+      command: apt update
+    - name: install tools for adding ppa repositories
+      apt:
+        name: software-properties-common
+        state: latest
+
+# Configuring apache
+    - name: install apache2
+      apt: name=apache2 update_cache=yes state=latest
+    - name: install git
+      apt: name=gnupg name=git
+    - name: install php
+      apt_repository:
+        repo="ppa:ondrej/php"
+    - name: updating the repo
+      apt: update_cache=yes
+    - name: installing PHP 8.0
+      apt: name=php8.0 state=present
+    - name: install packages
+      apt:
+        pkg:
+          - php8.0-fpm
+          - libapache2-mod-php8.0
+          - libapache2-mod-fcgid
+          - php-pgsql
+    - name: enable Apache2 modules
+      apache2_module:
+          name: proxy_fcgi
+          name: setenvif
+          state: present
+    - name: enable config
+      command: a2enconf php8.0-fpm
+
+# Setting up repository
+    - name: remove html directory
+      file:
+        path: /var/www/html/index.html
+        state: absent
+    - name: upload website files from git
+      git:
+        repo: https://git.mif.vu.lt/mipu7431/traveler.git
+        dest: /var/www/html
+        clone: yes
+    - name: change directory group
+      command: chgrp -R www-data /var/www/html/storage /var/www/html/bootstrap/cache
+    - name: change directory permissions
+      command: chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
+    - name: remove default apache config
+      file:
+        path: /etc/apache2/sites-available/000-default.conf
+        state: absent
+    - name: change apache config file
+      copy:
+        src: 000-default.conf
+        dest: /etc/apache2/sites-available/000-default.conf
+    - name: apply config changes
+      command: a2ensite 000-default.conf
+    - name: rewrite changes
+      command: a2enmod rewrite
+    - name: add database IP
+      shell: sed -i 's/DB_HOST=127.0.0.1/DB_HOST="{{ db_ip }}"/' /var/www/html/.env
+    - name: make migrations
+      command: php /var/www/html/artisan migrate
+    - name: restart apache
+      service: name=apache2 state=restarted

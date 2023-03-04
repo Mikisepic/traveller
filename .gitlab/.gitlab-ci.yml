@@ -1,0 +1,26 @@
+stages:
+  - test
+  - deploy
+
+before_script:
+  # Move to src directory where all the code is written
+  - cd traveler/
+  # Clear npm cache before installing dependencies
+  - npm cache clear -f
+  # Install node dependencies
+  - yarn
+  # Set up .env
+  - cp /home/mipu7431/.env .env
+  # Build application for production
+  - yarn build
+
+test:
+  stage: test
+  script:
+    # Run php tests
+    - yarn test
+
+deploy:
+  stage: deploy
+  script:
+    - echo "THIS STAGE IS NOT YET IMPLEMENTED"
