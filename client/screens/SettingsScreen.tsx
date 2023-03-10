@@ -1,27 +1,19 @@
 import { StyleSheet } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import { t } from 'react-native-tailwindcss';
-import { Counter } from '../components/features/counter/Counter';
 
-export default function TabOneScreen({
-	navigation,
-}: RootTabScreenProps<'TabOne'>) {
+export const SettingsScreen = () => {
 	return (
 		<View style={styles.container}>
-			<Text style={[t.textRed700, t.text6xl]}>Tab One</Text>
+			<Text style={styles.title}>Settings</Text>
 			<View
 				style={styles.separator}
 				lightColor="#eee"
 				darkColor="rgba(255,255,255,0.1)"
 			/>
-			<EditScreenInfo path="/screens/TabOneScreen.tsx" />
-			<Counter />
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
