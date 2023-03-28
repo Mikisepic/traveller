@@ -98,7 +98,9 @@ export const Bookmark: React.FC = () => {
 					</span>{' '}
 					to{' '}
 					<span className="font-semibold text-gray-900 dark:text-white">
-						{pagination.perPage * pagination.page}
+						{pagination.perPage * pagination.page > pagination.count
+							? pagination.count
+							: pagination.perPage * pagination.page}
 					</span>{' '}
 					of{' '}
 					<span className="font-semibold text-gray-900 dark:text-white">

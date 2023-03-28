@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Bookmark, Map, Trip } from './views';
 
 export interface AppRoute {
