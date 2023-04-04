@@ -1,15 +1,15 @@
-export interface Place {
+export interface Coordinates {
 	lat: number;
 	lng: number;
 }
 
-export interface Pin extends Place {
+export interface Pin extends Coordinates {
 	id: string;
 	title: string;
 	description: string;
 	isBookmarked: boolean;
 }
 
-export interface Viewport extends Place {
+export interface Viewport extends Coordinates {
 	zoom: number;
 }

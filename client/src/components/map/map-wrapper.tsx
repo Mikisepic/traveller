@@ -8,7 +8,7 @@ import {
 import Map, { MapLayerMouseEvent, Marker, Popup } from 'react-map-gl';
 
 import { PopupDialog } from './popup-dialog';
-import { Pin, Place, Viewport } from './types';
+import { Pin, Coordinates, Viewport } from './types';
 
 interface Props {
 	style: string;
@@ -31,7 +31,7 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		const initialValue = JSON.parse(saved);
 		return initialValue || [];
 	});
-	const [newPlace, setNewPlace] = useState<Place | null>(null);
+	const [newPlace, setNewPlace] = useState<Coordinates | null>(null);
 
 	useEffect(() => {
 		localStorage.setItem('pins', JSON.stringify(pins));

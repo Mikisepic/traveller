@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import { Pin, Place } from './types';
+import { Pin, Coordinates } from './types';
 
 interface Props {
 	pins: Pin[];
 	setPins: React.Dispatch<React.SetStateAction<Pin[]>>;
-	newPlace: Place | null;
-	setNewPlace: React.Dispatch<React.SetStateAction<Place | null>>;
+	newPlace: Coordinates | null;
+	setNewPlace: React.Dispatch<React.SetStateAction<Coordinates | null>>;
 }
 
 export const PopupDialog: React.FC<Props> = ({
