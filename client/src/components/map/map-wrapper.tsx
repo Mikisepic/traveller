@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import axios from 'axios';
 import {
 	BookmarkIcon,
 	PlusIcon,
@@ -25,17 +26,23 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 	const [selectedStyle, setSelectedStyle] = useState<string>(style);
 
 	// Markers
-	const [pins, setPins] = useState<Pin[]>(() => {
-		// Temporary solution until backend is stable
-		const saved = localStorage.getItem('pins');
-		const initialValue = JSON.parse(saved);
-		return initialValue || [];
-	});
+	const [pins, setPins] = useState<Pin[]>([]);
 	const [newPlace, setNewPlace] = useState<Coordinates | null>(null);
 
 	useEffect(() => {
-		localStorage.setItem('pins', JSON.stringify(pins));
-	}, [pins]);
+		const getPins = async () => {
+			try {
+				const allPins = await axios.get(
+					`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
+				);
+				setPins(allPins.data);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+
+		getPins();
+	}, []);
 
 	const handleStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const newStyle = e.target.value;
@@ -88,7 +95,7 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 			</div>
 
 			<Map
-				mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
+				mapboxAccessToken={(import.meta as any).env.VITE_MAPBOX_ACCESS_TOKEN}
 				initialViewState={{
 					...viewport,
 					latitude: viewport.lat,
