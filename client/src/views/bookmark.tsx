@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
+import axios from 'axios';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { Pin } from '../components/map';
 
 export const Bookmark: React.FC = () => {
-	const [pins, setPins] = useState<Pin[]>(() => {
-		// Temporary solution until backend is stable
-		const saved = localStorage.getItem('pins');
-		const initialValue = JSON.parse(saved);
-		return initialValue || [];
-	});
+	const [pins, setPins] = useState<Pin[]>([]);
 
 	const paginate = (page = 1, perPage = 5) => {
 		const offset = perPage * (page - 1);
 		const totalItems = pins.filter(({ isBookmarked }) => isBookmarked);
 		const paginatedItems = totalItems.slice(offset, perPage * page);
 		const totalPages = Math.ceil(totalItems.length / perPage);
-
-		console.log(paginatedItems);
 
 		return {
 			perPage,
@@ -37,9 +31,19 @@ export const Bookmark: React.FC = () => {
 		setPagination(paginate(nextPage));
 
 	useEffect(() => {
-		localStorage.setItem('pins', JSON.stringify(pins));
-		setPagination(paginate());
-	}, [pins]);
+		const getPins = async () => {
+			try {
+				const allPins = await axios.get(
+					`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
+				);
+				setPins(allPins.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+
+		getPins();
+	}, []);
 
 	const handleBookmarking = (id: string) => {
 		let index = pins.findIndex((pin) => pin.id === id);
