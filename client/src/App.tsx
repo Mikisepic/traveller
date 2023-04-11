@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { FooterWrapper } from './components/footer';
 import { NavbarWrapper } from './components/navbar';
 import { AppRoute, routes } from './routes';
-import { PageNotFound } from './views';
+import { PageNotFound, TripItem } from './views';
 
 export const App: React.FC = () => {
 	const getRoutes = (routes: AppRoute[]) =>
@@ -20,6 +20,8 @@ export const App: React.FC = () => {
 			<div className="mt-24">
 				<Routes>
 					{getRoutes(routes)}
+					<Route path="/trips/new" element={<TripItem />} />
+					<Route path="/trips/:id" element={<TripItem />} />
 					<Route path="*" element={<PageNotFound />} />
 				</Routes>
 			</div>

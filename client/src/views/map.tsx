@@ -11,7 +11,7 @@ export const Map: React.FC = () => {
 					Navigate and find destinations
 				</small>
 			</h1>
-			<MapWrapper style="dark-v11" />
+			<MapWrapper style="light-v11" />
 		</>
 	);
 };
