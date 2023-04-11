@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
 	BookmarkIcon,
-	PlusIcon,
 	BookmarkSlashIcon,
+	TrashIcon,
+	StarIcon,
 } from '@heroicons/react/24/outline';
 import Map, { MapLayerMouseEvent, Marker, Popup } from 'react-map-gl';
 
@@ -29,18 +30,18 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 	const [pins, setPins] = useState<Pin[]>([]);
 	const [newPlace, setNewPlace] = useState<Coordinates | null>(null);
 
-	useEffect(() => {
-		const getPins = async () => {
-			try {
-				const allPins = await axios.get(
-					`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-				);
-				setPins(allPins.data);
-			} catch (err) {
-				console.error(err);
-			}
-		};
+	const getPins = async () => {
+		try {
+			const allPins = await axios.get(
+				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
+			);
+			setPins(allPins.data);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
+	useEffect(() => {
 		getPins();
 	}, []);
 
@@ -63,15 +64,36 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		});
 	};
 
-	const handleBookmarking = (bookmarked: boolean) => {
-		let index = pins.findIndex((pin) => pin.id === currentPlaceId);
-		if (index === -1) return;
+	const handleDelete = async (id: string) => {
+		try {
+			await axios.delete(
+				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${id}`,
+			);
+		} catch (err) {
+			console.error(err);
+		}
 
-		setPins([
-			...pins.slice(0, index),
-			{ ...pins[index], isBookmarked: !bookmarked },
-			...pins.slice(index + 1),
-		]);
+		getPins();
+	};
+
+	const handleBookmarking = async (p: Pin) => {
+		try {
+			await axios.patch(
+				`${
+					(import.meta as any).env.VITE_BACKEND_API
+				}/api/places/${currentPlaceId}`,
+				{
+					title: p.title,
+					lat: p.lat,
+					lng: p.lng,
+					isBookmarked: !p.isBookmarked,
+				},
+			);
+
+			getPins();
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	return (
@@ -140,17 +162,23 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 										</p>
 									</div>
 
+									<div className="mb-6 flex">
+										<h1 className="font-bold text-2xl">{p.priority}</h1>{' '}
+										<StarIcon className="w-8 h-8 text-yellow-400" />
+									</div>
+
 									<button
 										type="button"
-										className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+										className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700"
+										onClick={() => handleDelete(p.id)}
 									>
-										<PlusIcon className="h-6 w-6 text-white" />
+										<TrashIcon className="h-6 w-6 text-white" />
 									</button>
 
 									<button
 										type="button"
 										className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-										onClick={() => handleBookmarking(p.isBookmarked)}
+										onClick={() => handleBookmarking(p)}
 									>
 										{p.isBookmarked ? (
 											<BookmarkSlashIcon className="h-6 w-6 text-white" />

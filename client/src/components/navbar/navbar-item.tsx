@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { NavLink } from 'react-router-dom';
+
 import { AppRoute } from '../../routes';
 
 interface Props {
@@ -11,7 +12,7 @@ export const NavbarItem: React.FC<Props> = ({ route }) => {
 	return (
 		<li>
 			<NavLink
-				to={route.path}
+				to={{ pathname: route.path, search: route?.search }}
 				className={({ isActive }) =>
 					[
 						'block py-2 pl-3 pr-4 ',

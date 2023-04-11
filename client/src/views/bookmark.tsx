@@ -27,33 +27,39 @@ export const Bookmark: React.FC = () => {
 
 	const [pagination, setPagination] = useState(paginate());
 
-	const handlePageChange = (nextPage: number) =>
-		setPagination(paginate(nextPage));
+	const getPins = async () => {
+		try {
+			const allPins = await axios.get(
+				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
+			);
+			setPins(allPins.data);
+			setPagination(paginate());
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	useEffect(() => {
-		const getPins = async () => {
-			try {
-				const allPins = await axios.get(
-					`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-				);
-				setPins(allPins.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-
 		getPins();
 	}, []);
 
-	const handleBookmarking = (id: string) => {
-		let index = pins.findIndex((pin) => pin.id === id);
-		if (index === -1) return;
+	const handlePageChange = (nextPage: number) =>
+		setPagination(paginate(nextPage));
 
-		setPins([
-			...pins.slice(0, index),
-			{ ...pins[index], isBookmarked: false },
-			...pins.slice(index + 1),
-		]);
+	const handleBookmarking = async (p: Pin) => {
+		try {
+			await axios.patch(
+				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${p.id}`,
+				{
+					title: p.title,
+					lat: p.lat,
+					lng: p.lng,
+					isBookmarked: false,
+				},
+			);
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	return (
@@ -82,7 +88,7 @@ export const Bookmark: React.FC = () => {
 						<button
 							type="button"
 							className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700"
-							onClick={() => handleBookmarking(pin.id)}
+							onClick={() => handleBookmarking(pin)}
 						>
 							<TrashIcon className="h-8 w-8 text-white" />
 						</button>

@@ -11,12 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = os.getenv('DJANGO_DEBUG') != 'False'
 ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = ['https://localhost:3000']
+CSRF_TRUSTED_ORIGINS = [os.getenv('FRONTEND_URL')]
 
 # Application definition
 
@@ -40,13 +42,12 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
@@ -118,7 +119,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Third Party Stuff
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
+    os.getenv('FRONTEND_URL'),
+]
+CORS_ORIGIN_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',

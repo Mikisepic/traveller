@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Bookmark, Map, Trip } from './views';
+import { Bookmark, Map, TripList } from './views';
 
 export interface AppRoute {
 	path: string;
 	name: string;
 	element: React.FC;
+	search?: string;
 }
 
 export const routes: AppRoute[] = [
@@ -16,8 +17,9 @@ export const routes: AppRoute[] = [
 	},
 	{
 		path: '/trips',
+		search: '?page=1',
 		name: 'Trips',
-		element: Trip,
+		element: TripList,
 	},
 	{
 		path: '/bookmarks',
