@@ -1,26 +1,24 @@
 stages:
-  - test
-  - deploy
+  - build
 
-before_script:
-  # Move to src directory where all the code is written
-  - cd traveler/
-  # Clear npm cache before installing dependencies
-  - npm cache clear -f
-  # Install node dependencies
-  - yarn
-  # Set up .env
-  - cp /home/mipu7431/.env .env
-  # Build application for production
-  - yarn build
-
-test:
-  stage: test
+build_frontend:
+  stage: build
+  image: node:18
   script:
-    # Run php tests
-    - yarn test
+    - cd client
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - build
 
-deploy:
-  stage: deploy
+build_backend:
+  stage: build
+  image: python:3.9
   script:
-    - echo "THIS STAGE IS NOT YET IMPLEMENTED"
+    - source ./traveller-env/bin/activate
+    - cd server
+    - pip3 install -r requirements.txt
+  artifacts:
+    paths:
+      - .env
