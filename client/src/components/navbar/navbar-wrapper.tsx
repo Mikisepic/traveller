@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { AppRoute } from '../../routes';
+import { AppRoute } from '@traveller-ui/routes';
+
 import { NavbarItem } from './navbar-item';
 
 interface Props {

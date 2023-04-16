@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MapWrapper } from '../components/map';
+import { MapWrapper } from '@traveller-ui/components/map';
 
 export const Map: React.FC = () => {
 	return (

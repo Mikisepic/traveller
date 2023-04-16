@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NavLink } from 'react-router-dom';
 
-import { AppRoute } from '../../routes';
+import { AppRoute } from '@traveller-ui/routes';
 
 interface Props {
 	route: AppRoute;

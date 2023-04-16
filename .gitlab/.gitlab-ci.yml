@@ -1,7 +1,8 @@
 stages:
   - build
+  - deploy
 
-build_frontend:
+client:build:
   stage: build
   image: node:18
   script:
@@ -12,7 +13,14 @@ build_frontend:
     paths:
       - build
 
-build_backend:
+client:deploy:
+  stage: deploy
+  image: node:18
+  needs: ['client:build']
+  script: echo "Not implemented yet"
+  environment: production
+
+server:build:
   stage: build
   image: python:3.9
   script:
@@ -22,3 +30,10 @@ build_backend:
   artifacts:
     paths:
       - .env
+
+server:deploy:
+  stage: deploy
+  image: python:3.9
+  needs: ['server:build']
+  script: echo "Not implemented yet"
+  environment: production

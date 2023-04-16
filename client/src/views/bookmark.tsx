@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
-import axios from 'axios';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-import { Pin } from '../components/map';
+import { Place, PlacePayload } from '@traveller-ui/components/map';
+import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+import {
+	fetchPlaces,
+	selectPlaces,
+	updatePlace,
+} from '@traveller-ui/store/features/place';
 
 export const Bookmark: React.FC = () => {
-	const [pins, setPins] = useState<Pin[]>([]);
+	const dispatch = useAppDispatch();
+	const places = useAppSelector(selectPlaces);
 
 	const paginate = (page = 1, perPage = 5) => {
 		const offset = perPage * (page - 1);
-		const totalItems = pins.filter(({ isBookmarked }) => isBookmarked);
+		const totalItems = places.filter(({ isBookmarked }) => isBookmarked);
 		const paginatedItems = totalItems.slice(offset, perPage * page);
 		const totalPages = Math.ceil(totalItems.length / perPage);
 
@@ -27,39 +33,28 @@ export const Bookmark: React.FC = () => {
 
 	const [pagination, setPagination] = useState(paginate());
 
-	const getPins = async () => {
-		try {
-			const allPins = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-			);
-			setPins(allPins.data);
-			setPagination(paginate());
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	useEffect(() => {
+		dispatch(fetchPlaces());
+	}, []);
 
 	useEffect(() => {
-		getPins();
-	}, []);
+		setPagination(paginate());
+	}, [places]);
 
 	const handlePageChange = (nextPage: number) =>
 		setPagination(paginate(nextPage));
 
-	const handleBookmarking = async (p: Pin) => {
-		try {
-			await axios.patch(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${p.id}`,
-				{
-					title: p.title,
-					lat: p.lat,
-					lng: p.lng,
-					isBookmarked: false,
-				},
-			);
-		} catch (err) {
-			console.error(err);
-		}
+	const handleBookmarking = async (p: Place) => {
+		const payload: PlacePayload = {
+			title: p.title,
+			description: p.description,
+			lat: p.lat,
+			lng: p.lng,
+			priority: p.priority,
+			isBookmarked: !p.isBookmarked,
+		};
+
+		dispatch(updatePlace({ id: p.id, payload }));
 	};
 
 	return (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import axios from 'axios';
 import {
 	BookmarkIcon,
 	BookmarkSlashIcon,
@@ -9,14 +8,32 @@ import {
 } from '@heroicons/react/24/outline';
 import Map, { MapLayerMouseEvent, Marker, Popup } from 'react-map-gl';
 
+import {
+	fetchPlace,
+	fetchPlaces,
+	selectPlaces,
+	selectPlaceError,
+	selectPlaceLoading,
+	selectPlace,
+	updatePlace,
+	deletePlace,
+} from '@traveller-ui/store/features/place';
+import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+
 import { PopupDialog } from './popup-dialog';
-import { Pin, Coordinates, Viewport } from './types';
+import { Place, Coordinates, Viewport, PlacePayload } from './types';
 
 interface Props {
 	style: string;
 }
 
 export const MapWrapper: React.FC<Props> = ({ style }) => {
+	const dispatch = useAppDispatch();
+	const places = useAppSelector(selectPlaces);
+	const place = useAppSelector(selectPlace);
+	const loading = useAppSelector(selectPlaceLoading);
+	const error = useAppSelector(selectPlaceError);
+
 	// Map
 	const [viewport, setViewport] = useState<Viewport>({
 		lat: 54.69034904148157,
@@ -27,22 +44,10 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 	const [selectedStyle, setSelectedStyle] = useState<string>(style);
 
 	// Markers
-	const [pins, setPins] = useState<Pin[]>([]);
 	const [newPlace, setNewPlace] = useState<Coordinates | null>(null);
 
-	const getPins = async () => {
-		try {
-			const allPins = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-			);
-			setPins(allPins.data);
-		} catch (err) {
-			console.error(err);
-		}
-	};
-
 	useEffect(() => {
-		getPins();
+		dispatch(fetchPlaces());
 	}, []);
 
 	const handleStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,6 +57,7 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 
 	const handleMarkerClick = (id: string, lat: number, lng: number) => {
 		setCurrentPlaceId(id);
+		dispatch(fetchPlace(id));
 		setViewport({ ...viewport, lat, lng });
 	};
 
@@ -64,36 +70,21 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		});
 	};
 
-	const handleDelete = async (id: string) => {
-		try {
-			await axios.delete(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${id}`,
-			);
-		} catch (err) {
-			console.error(err);
-		}
-
-		getPins();
+	const handleDelete = (id: string) => {
+		dispatch(deletePlace(id));
 	};
 
-	const handleBookmarking = async (p: Pin) => {
-		try {
-			await axios.patch(
-				`${
-					(import.meta as any).env.VITE_BACKEND_API
-				}/api/places/${currentPlaceId}`,
-				{
-					title: p.title,
-					lat: p.lat,
-					lng: p.lng,
-					isBookmarked: !p.isBookmarked,
-				},
-			);
+	const handleBookmarking = async (p: Place) => {
+		const payload: PlacePayload = {
+			title: p.title,
+			description: p.description,
+			lat: p.lat,
+			lng: p.lng,
+			priority: p.priority,
+			isBookmarked: !p.isBookmarked,
+		};
 
-			getPins();
-		} catch (err) {
-			console.error(err);
-		}
+		dispatch(updatePlace({ id: p.id, payload }));
 	};
 
 	return (
@@ -128,69 +119,70 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 				mapStyle={`mapbox://styles/mapbox/${selectedStyle}`}
 				onDblClick={handleAddClick}
 			>
-				{pins.map((p) => (
+				{places.map((p) => (
 					<div key={p.id}>
 						<Marker
 							latitude={p.lat}
 							longitude={p.lng}
 							onClick={() => handleMarkerClick(p.id, p.lat, p.lng)}
 						></Marker>
-						{p.id === currentPlaceId && (
-							<Popup
-								key={p.id}
-								latitude={p.lat}
-								longitude={p.lng}
-								closeButton={true}
-								closeOnClick={false}
-								onClose={() => setCurrentPlaceId(null)}
-								offset={[0, -40]}
-								anchor="bottom"
-							>
-								<div className="max-w-sm p-3 bg-white dark:bg-gray-800">
-									<div className="mb-5">
-										<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-											Place
-										</h5>
-										<p className="mb-3 text-lg font-normal text-gray-700 dark:text-gray-400">
-											{p.title}
-										</p>
-										<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-											About
-										</h5>
-										<p className="mb-3 text-lg font-normal text-gray-700 dark:text-gray-400">
-											{p.description}
-										</p>
-									</div>
-
-									<div className="mb-6 flex">
-										<h1 className="font-bold text-2xl">{p.priority}</h1>{' '}
-										<StarIcon className="w-8 h-8 text-yellow-400" />
-									</div>
-
-									<button
-										type="button"
-										className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700"
-										onClick={() => handleDelete(p.id)}
-									>
-										<TrashIcon className="h-6 w-6 text-white" />
-									</button>
-
-									<button
-										type="button"
-										className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-										onClick={() => handleBookmarking(p)}
-									>
-										{p.isBookmarked ? (
-											<BookmarkSlashIcon className="h-6 w-6 text-white" />
-										) : (
-											<BookmarkIcon className="h-6 w-6 text-white" />
-										)}
-									</button>
-								</div>
-							</Popup>
-						)}
 					</div>
 				))}
+
+				{place && place.id === currentPlaceId && (
+					<Popup
+						key={place.id}
+						latitude={place.lat}
+						longitude={place.lng}
+						closeButton={true}
+						closeOnClick={false}
+						onClose={() => setCurrentPlaceId(null)}
+						offset={[0, -40]}
+						anchor="bottom"
+					>
+						<div className="max-w-sm p-3 bg-white dark:bg-gray-800">
+							<div className="mb-5">
+								<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+									Place
+								</h5>
+								<p className="mb-3 text-lg font-normal text-gray-700 dark:text-gray-400">
+									{place.title}
+								</p>
+								<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+									About
+								</h5>
+								<p className="mb-3 text-lg font-normal text-gray-700 dark:text-gray-400">
+									{place.description}
+								</p>
+							</div>
+
+							<div className="mb-6 flex">
+								<h1 className="font-bold text-2xl">{place.priority}</h1>{' '}
+								<StarIcon className="w-8 h-8 text-yellow-400" />
+							</div>
+
+							<button
+								type="button"
+								className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700"
+								onClick={() => handleDelete(place.id)}
+							>
+								<TrashIcon className="h-6 w-6 text-white" />
+							</button>
+
+							<button
+								type="button"
+								className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+								onClick={() => handleBookmarking(place)}
+							>
+								{place.isBookmarked ? (
+									<BookmarkSlashIcon className="h-6 w-6 text-white" />
+								) : (
+									<BookmarkIcon className="h-6 w-6 text-white" />
+								)}
+							</button>
+						</div>
+					</Popup>
+				)}
 
 				{newPlace && (
 					<>
@@ -204,12 +196,7 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 							offset={[0, -40]}
 							anchor="bottom"
 						>
-							<PopupDialog
-								pins={pins}
-								setPins={setPins}
-								newPlace={newPlace}
-								setNewPlace={setNewPlace}
-							/>
+							<PopupDialog newPlace={newPlace} setNewPlace={setNewPlace} />
 						</Popup>
 					</>
 				)}

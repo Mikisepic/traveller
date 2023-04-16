@@ -2,7 +2,14 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react';
 
+const path = require('path');
+
 export default defineConfig({
+	resolve: {
+		alias: {
+			'@traveller-ui': path.resolve(__dirname, 'src'),
+		},
+	},
 	plugins: [
 		react(),
 		VitePWA({

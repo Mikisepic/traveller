@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 
-import axios from 'axios';
+import { useAppDispatch } from '@traveller-ui/store';
 
-import { Coordinates, Pin, PinPayload } from './types';
+import { Coordinates, Place, PlacePayload } from './types';
+import { createPlace, fetchPlaces } from '@traveller-ui/store/features/place';
 
 interface Props {
-	pins: Pin[];
-	setPins: React.Dispatch<React.SetStateAction<Pin[]>>;
 	newPlace: Coordinates | null;
 	setNewPlace: React.Dispatch<React.SetStateAction<Coordinates | null>>;
 }
 
-export const PopupDialog: React.FC<Props> = ({
-	pins,
-	setPins,
-	newPlace,
-	setNewPlace,
-}) => {
+export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
+	const dispatch = useAppDispatch();
+
 	const [title, setTitle] = useState<string | null>(null);
 	const [description, setDescription] = useState<string | null>(null);
 	const [priority, setPriority] = useState<string | null>(null);
@@ -34,7 +30,7 @@ export const PopupDialog: React.FC<Props> = ({
 		e.preventDefault();
 
 		if (newPlace && title && description && priority) {
-			const payload: PinPayload = {
+			const payload: PlacePayload = {
 				title,
 				description,
 				lat: parseFloat(newPlace.lat.toFixed(6)),
@@ -43,16 +39,8 @@ export const PopupDialog: React.FC<Props> = ({
 				priority: parseInt(priority),
 			};
 
-			try {
-				const res = await axios.post(
-					`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-					payload,
-				);
-				setPins([...pins, res.data]);
-				setNewPlace(null);
-			} catch (err) {
-				console.error(err);
-			}
+			dispatch(createPlace(payload));
+			setNewPlace(null);
 		}
 	};
 

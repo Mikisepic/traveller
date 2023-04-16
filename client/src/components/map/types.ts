@@ -3,14 +3,14 @@ export interface Coordinates {
 	lng: number;
 }
 
-export interface PinPayload extends Coordinates {
+export interface PlacePayload extends Coordinates {
 	title: string;
 	description: string;
 	isBookmarked: boolean;
 	priority: number;
 }
 
-export interface Pin extends Coordinates, PinPayload {
+export interface Place extends Coordinates, PlacePayload {
 	id: string;
 }
 
