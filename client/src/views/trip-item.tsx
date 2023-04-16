@@ -1,51 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Pin } from '../components/map';
-import axios from 'axios';
+
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { useLocation } from 'react-router-dom';
+
+import { Place } from '@traveller-ui/components/map';
+import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+import {
+	createTrip,
+	fetchTrip,
+	selectTrip,
+	updateTrip,
+} from '@traveller-ui/store/features/trip';
+import { fetchPlaces, selectPlaces } from '@traveller-ui/store/features/place';
+
 import { TripPayload } from './types';
 
 export const TripItem = () => {
+	const dispatch = useAppDispatch();
+	const trip = useAppSelector(selectTrip);
+	const places = useAppSelector(selectPlaces);
+
 	const { pathname } = useLocation();
 
-	const [pins, setPins] = useState<Pin[]>([]);
 	const isNew = pathname.includes('new');
 
-	const [locations, setLocations] = useState<Pin[]>([]);
+	const [locations, setLocations] = useState<Place[]>([]);
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 
-	const getPins = async () => {
-		try {
-			const allPins = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-			);
-			setPins(allPins.data);
-		} catch (err) {
-			console.error(err);
-		}
-	};
-
-	const getTrip = async () => {
-		try {
-			const currentTrip = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/${pathname
-					.split('/')
-					.pop()}`,
-			);
-			console.log(currentTrip);
-			setTitle(currentTrip.data.title);
-			setDescription(currentTrip.data.description);
-			setLocations(currentTrip.data.locations);
-		} catch (err) {
-			console.error(err);
-		}
-	};
+	useEffect(() => {
+		dispatch(fetchPlaces());
+		if (!isNew) dispatch(fetchTrip(pathname.split('/').pop() as string));
+	}, []);
 
 	useEffect(() => {
-		getPins();
-		if (!isNew) getTrip();
-	}, []);
+		if (trip) {
+			setTitle(trip.title);
+			setDescription(trip.description);
+			setLocations(trip.locations);
+		}
+	}, [trip]);
 
 	const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
 		setTitle(e.target.value);
@@ -53,7 +47,7 @@ export const TripItem = () => {
 	const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) =>
 		setDescription(e.target.value);
 
-	const handleCheckboxClick = (loc: Pin) => {
+	const handleCheckboxClick = (loc: Place) => {
 		const index = locations.indexOf(loc);
 
 		if (index !== -1) {
@@ -73,21 +67,9 @@ export const TripItem = () => {
 				locations,
 			};
 
-			try {
-				if (isNew) {
-					await axios.post(
-						`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/`,
-						payload,
-					);
-				} else {
-					await axios.patch(
-						`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/`,
-						payload,
-					);
-				}
-			} catch (err) {
-				console.error(err);
-			}
+			isNew
+				? dispatch(createTrip(payload))
+				: dispatch(updateTrip({ id: trip?.id as string, payload }));
 		}
 	};
 
@@ -136,24 +118,24 @@ export const TripItem = () => {
 						Locations
 					</label>
 					<ul className="max-w-md max-h-[200px] overflow-y-auto space-y-1 text-gray-500 list-none list-inside dark:text-gray-400">
-						{pins.length > 0
-							? pins.map((pin, index) => (
+						{places.length > 0
+							? places.map((place, index) => (
 									<li key={index}>
 										<div className="flex items-center mb-4">
 											<button
 												type="button"
 												className="flex gap-5"
-												onClick={() => handleCheckboxClick(pin)}
+												onClick={() => handleCheckboxClick(place)}
 											>
 												<CheckCircleIcon
 													className={[
 														'h-6 w-6 border rounded-full text-white',
-														locations.indexOf(pin) > -1
+														locations.indexOf(place) > -1
 															? 'bg-green-500'
 															: 'bg-red-500',
 													].join(' ')}
 												/>
-												{pin.title}
+												{place.title}
 											</button>
 										</div>
 									</li>

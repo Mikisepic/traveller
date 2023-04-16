@@ -1,9 +1,9 @@
-import { Pin } from '../components/map';
+import { Place } from '@traveller-ui/components/map';
 
 export interface TripPayload {
 	title: string;
 	description: string;
-	locations: Pin[];
+	locations: Place[];
 }
 
 export interface Trip extends TripPayload {

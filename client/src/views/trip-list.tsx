@@ -1,44 +1,29 @@
 import React, { useEffect, useState } from 'react';
+
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 
-import axios from 'axios';
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-
-import { PaginatedList } from '../types';
-import { Trip } from './types';
+import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+import {
+	deleteTrip,
+	fetchTrips,
+	selectTrips,
+} from '@traveller-ui/store/features/trip';
 
 export const TripList: React.FC = () => {
-	const [trips, setTrips] = useState<PaginatedList<Trip>>();
+	const dispatch = useAppDispatch();
+	const trips = useAppSelector(selectTrips);
 
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
 
-	const getTrips = async () => {
-		try {
-			const allTrips = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/?page=${page}`,
-			);
-			setTrips(allTrips.data);
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	useEffect(() => {
-		getTrips();
+		dispatch(fetchTrips(page));
 	}, [page]);
 
 	const handleDelete = async (id: string) => {
-		try {
-			await axios.delete(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/${id}`,
-			);
-		} catch (err) {
-			console.error(err);
-		}
-
-		getTrips();
+		dispatch(deleteTrip(id));
 	};
 
 	const handleRedirect = (pageLocation: number) => setPage(pageLocation);
