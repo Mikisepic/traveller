@@ -1,3 +1,5 @@
+import { Base } from '@traveller-ui/types';
+
 export interface Coordinates {
 	lat: number;
 	lng: number;
@@ -10,9 +12,7 @@ export interface PlacePayload extends Coordinates {
 	priority: number;
 }
 
-export interface Place extends Coordinates, PlacePayload {
-	id: string;
-}
+export interface Place extends Base, Coordinates, PlacePayload {}
 
 export interface Viewport extends Coordinates {
 	zoom: number;

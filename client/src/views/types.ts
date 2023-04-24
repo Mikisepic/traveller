@@ -1,4 +1,5 @@
 import { Place } from '@traveller-ui/components/map';
+import { Base } from '@traveller-ui/types';
 
 export interface TripPayload {
 	title: string;
@@ -6,6 +7,4 @@ export interface TripPayload {
 	locations: Place[];
 }
 
-export interface Trip extends TripPayload {
-	id: string;
-}
+export interface Trip extends Base, TripPayload {}

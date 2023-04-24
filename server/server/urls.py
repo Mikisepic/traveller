@@ -5,4 +5,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/places/', include('places.urls')),
     re_path(r'^api/trips/', include('trips.urls')),
+    re_path(r'^api/notifications/', include('notifications.urls')),
 ]

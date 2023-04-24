@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 const path = require('path');
 
 export default defineConfig({
+	base: './',
 	resolve: {
 		alias: {
 			'@traveller-ui': path.resolve(__dirname, 'src'),
@@ -14,15 +15,17 @@ export default defineConfig({
 		react(),
 		VitePWA({
 			registerType: 'autoUpdate',
+			injectRegister: 'script',
 			devOptions: {
 				enabled: true,
 			},
-			includeAssets: ['icons/favicon.ico', 'icons/apple-touch-icon.png'],
+			includeAssets: ['favicon.ico', 'icons/apple-touch-icon.png'],
 			manifest: {
 				name: 'Traveller',
 				short_name: 'traveller',
 				theme_color: '#ffffff',
 				start_url: '/',
+				scope: '/',
 				icons: [
 					{
 						src: 'icons/manifest-icon-144.maskable.png',
