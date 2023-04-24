@@ -1,9 +1,11 @@
 stages:
-  - build
-  - deploy
+  - build_client_stage
+  - deploy_client_stage
+  - build_server_stage
+  - deploy_server_stage
 
 client:build:
-  stage: build
+  stage: build_client_stage
   image: node:18
   script:
     - cd client
@@ -11,17 +13,26 @@ client:build:
     - yarn build
   artifacts:
     paths:
-      - build
+      - client/dist/
 
 client:deploy:
-  stage: deploy
+  stage: deploy_client_stage
   image: node:18
-  needs: ['client:build']
-  script: echo "Not implemented yet"
   environment: production
+  # before_script:
+  #   - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+  #   - eval $(ssh-agent -s)
+  #   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  #   - mkdir -p ~/.ssh
+  #   - chmod 700 ~/.ssh
+  #   - ssh-keyscan $DEPLOY_SERVER_ADDRESS >> ~/.ssh/known_hosts
+  #   - chmod 644 ~/.ssh/known_hosts
+  script:
+    # - scp -P $DEPLOY_SERVER_PORT -r client/dist/ $DEPLOY_SERVER_USER@$DEPLOY_SERVER_ADDRESS:/home/mipu7431
+    - echo "Not implemented yet"
 
 server:build:
-  stage: build
+  stage: build_server_stage
   image: python:3.9
   script:
     - source ./traveller-env/bin/activate
@@ -32,8 +43,7 @@ server:build:
       - .env
 
 server:deploy:
-  stage: deploy
+  stage: deploy_server_stage
   image: python:3.9
-  needs: ['server:build']
-  script: echo "Not implemented yet"
   environment: production
+  script: echo "Not implemented yet"

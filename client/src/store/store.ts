@@ -3,11 +3,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import placeReducer from './features/place/place.slice';
 import tripReducer from './features/trip/trip.slice';
+import notificationReducer from './features/notification/notification.slice';
 
 export const store = configureStore({
 	reducer: {
 		place: placeReducer,
 		trip: tripReducer,
+		notification: notificationReducer,
 	},
 });
 
