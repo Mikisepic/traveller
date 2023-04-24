@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 import { useLocation } from 'react-router-dom';
 
 import { Place } from '@traveller-ui/components/map';
@@ -73,6 +73,10 @@ export const TripItem = () => {
 		}
 	};
 
+	const copyTextToClipboard = () => {
+		navigator.clipboard.writeText(window.location.href);
+	};
+
 	return (
 		<>
 			<h1 className="text-4xl mb-3 font-bold dark:text-white">
@@ -98,6 +102,12 @@ export const TripItem = () => {
 						required
 						onChange={handleTitleChange}
 					/>
+					<button
+						onClick={copyTextToClipboard}
+						className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+					>
+						<ClipboardIcon className="h-6 w-6 text-white" />
+					</button>
 				</div>
 
 				<div className="mb-6">
