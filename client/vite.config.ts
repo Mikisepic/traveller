@@ -1,6 +1,6 @@
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import react from '@vitejs/plugin-react';
 
 const path = require('path');
 
@@ -16,14 +16,29 @@ export default defineConfig({
 		VitePWA({
 			registerType: 'autoUpdate',
 			injectRegister: 'script',
+			includeAssets: ['favicon.ico', 'icons/*.png'],
 			devOptions: {
 				enabled: true,
 			},
-			includeAssets: ['favicon.ico', 'icons/apple-touch-icon.png'],
+			workbox: {
+				runtimeCaching: [
+					{
+						urlPattern: ({ url }) => {
+							return url.pathname.startsWith('/api');
+						},
+						handler: 'CacheFirst' as const,
+						options: {
+							cacheName: 'api-cache',
+							cacheableResponse: {
+								statuses: [0, 200],
+							},
+						},
+					},
+				],
+			},
 			manifest: {
 				name: 'Traveller',
-				short_name: 'traveller',
-				theme_color: '#ffffff',
+				short_name: 'Traveller',
 				start_url: '/',
 				scope: '/',
 				icons: [
@@ -31,18 +46,12 @@ export default defineConfig({
 						src: 'icons/manifest-icon-144.maskable.png',
 						sizes: '144x144',
 						type: 'image/png',
-						purpose: 'maskable',
+						purpose: 'any',
 					},
 					{
 						src: 'icons/manifest-icon-144.maskable.png',
 						sizes: '144x144',
 						type: 'image/png',
-						purpose: 'any',
-					},
-					{
-						src: 'icons/manifest-icon-192.maskable.png',
-						sizes: '192x192',
-						type: 'image/png',
 						purpose: 'maskable',
 					},
 					{
@@ -52,8 +61,8 @@ export default defineConfig({
 						purpose: 'any',
 					},
 					{
-						src: 'icons/manifest-icon-512.maskable.png',
-						sizes: '512x512',
+						src: 'icons/manifest-icon-192.maskable.png',
+						sizes: '192x192',
 						type: 'image/png',
 						purpose: 'maskable',
 					},
@@ -62,8 +71,18 @@ export default defineConfig({
 						sizes: '512x512',
 						type: 'image/png',
 						purpose: 'any',
+					},
+					{
+						src: 'icons/manifest-icon-512.maskable.png',
+						sizes: '512x512',
+						type: 'image/png',
+						purpose: 'maskable',
 					},
 				],
+				theme_color: '#000000',
+				background_color: '#ffffff',
+				display: 'fullscreen',
+				orientation: 'portrait',
 			},
 		}),
 	],
