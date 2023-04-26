@@ -2,11 +2,12 @@ import React from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
-import { FooterWrapper } from './components/footer';
-import { NavbarWrapper } from './components/navbar';
-import { AppRoute, routes } from './routes';
-import { PageNotFound, TripItem } from './views';
-import { InstallComponent } from './components/install-pwa';
+import { Footer } from './layouts/footer';
+import { NavbarWrapper } from './layouts/navbar';
+import { Trip } from './pages/trip';
+import { PageNotFound } from './pages/page-not-found';
+import { routes } from './routes';
+import { AppRoute } from './types';
 
 export const App: React.FC = () => {
 	const getRoutes = (routes: AppRoute[]) =>
@@ -19,17 +20,15 @@ export const App: React.FC = () => {
 			<NavbarWrapper routes={routes} />
 
 			<div className="mt-24">
-				<InstallComponent />
-
 				<Routes>
 					{getRoutes(routes)}
-					<Route path="/trips/new" element={<TripItem />} />
-					<Route path="/trips/:id" element={<TripItem />} />
+					<Route path="/trips/new" element={<Trip />} />
+					<Route path="/trips/:id" element={<Trip />} />
 					<Route path="*" element={<PageNotFound />} />
 				</Routes>
 			</div>
 
-			<FooterWrapper />
+			<Footer />
 		</div>
 	);
 };
