@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import {
 	Trip,
 	TripPayload,
 	TripUpdatePayload,
 } from '@traveller-ui/features/trip/types';
+import api from '@traveller-ui/services/api';
 import { RootState } from '@traveller-ui/store';
 import { PaginatedList } from '@traveller-ui/types';
 
@@ -128,8 +129,8 @@ export const fetchTrips = createAsyncThunk<PaginatedList<Trip>, number>(
 	fetchTripsAction.type,
 	async (page, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<PaginatedList<Trip>> = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/?page=${page}`,
+			const response: AxiosResponse<PaginatedList<Trip>> = await api.get(
+				`/api/trips/?page=${page}`,
 			);
 			return response.data;
 		} catch (error) {
@@ -142,9 +143,7 @@ export const fetchTrip = createAsyncThunk<Trip, string>(
 	fetchTripAction.type,
 	async (id, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Trip> = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/${id}`,
-			);
+			const response: AxiosResponse<Trip> = await api.get(`/api/trips/${id}`);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);
@@ -156,8 +155,8 @@ export const createTrip = createAsyncThunk<Trip, TripPayload>(
 	createTripAction.type,
 	async (payload, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Trip> = await axios.post(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/`,
+			const response: AxiosResponse<Trip> = await api.post(
+				`/api/trips/`,
 				payload,
 			);
 			return response.data;
@@ -171,8 +170,8 @@ export const updateTrip = createAsyncThunk<Trip, TripUpdatePayload>(
 	updateTripAction.type,
 	async ({ id, payload }, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Trip> = await axios.patch(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/${id}`,
+			const response: AxiosResponse<Trip> = await api.patch(
+				`/api/trips/${id}`,
 				payload,
 			);
 			return response.data;
@@ -186,9 +185,7 @@ export const deleteTrip = createAsyncThunk<string, string>(
 	deleteTripAction.type,
 	async (id, { rejectWithValue }) => {
 		try {
-			await axios.delete(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/${id}`,
-			);
+			await api.delete(`/api/trips/${id}`);
 			return id;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);

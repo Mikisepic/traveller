@@ -1,10 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import {
 	Notification,
 	NotificationPayload,
 } from '@traveller-ui/features/notification/types';
+import api from '@traveller-ui/services/api';
 import { RootState } from '@traveller-ui/store';
 import { PaginatedList } from '@traveller-ui/types';
 
@@ -116,9 +117,7 @@ export const fetchNotifications = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 			const response: AxiosResponse<PaginatedList<Notification>> =
-				await axios.get(
-					`${(import.meta as any).env.VITE_BACKEND_API}/api/notifications/`,
-				);
+				await api.get(`/api/notifications/`);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);
@@ -130,8 +129,8 @@ export const fetchNotification = createAsyncThunk<Notification, string>(
 	fetchNotificationAction.type,
 	async (id, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Notification> = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/notifications/${id}`,
+			const response: AxiosResponse<Notification> = await api.get(
+				`/api/notifications/${id}`,
 			);
 			return response.data;
 		} catch (error) {
@@ -145,8 +144,8 @@ export const createNotification = createAsyncThunk<
 	NotificationPayload
 >(createNotificationAction.type, async (payload, { rejectWithValue }) => {
 	try {
-		const response: AxiosResponse<Notification> = await axios.post(
-			`${(import.meta as any).env.VITE_BACKEND_API}/api/notifications/`,
+		const response: AxiosResponse<Notification> = await api.post(
+			`/api/notifications/`,
 			payload,
 		);
 		return response.data;
@@ -159,9 +158,7 @@ export const deleteNotification = createAsyncThunk<string, string>(
 	deleteNotificationAction.type,
 	async (id, { rejectWithValue }) => {
 		try {
-			await axios.delete(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/notifications/${id}`,
-			);
+			await api.delete(`/api/notifications/${id}`);
 			return id;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);

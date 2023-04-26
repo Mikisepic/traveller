@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import {
 	Place,
 	PlacePayload,
 	PlaceUpdatePayload,
 } from '@traveller-ui/features/map/types';
+import api from '@traveller-ui/services/api';
 import { RootState } from '@traveller-ui/store';
 
 import {
@@ -123,9 +124,7 @@ export const fetchPlaces = createAsyncThunk(
 	fetchPlacesAction.type,
 	async (_, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Place[]> = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
-			);
+			const response: AxiosResponse<Place[]> = await api.get(`/api/places/`);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);
@@ -137,9 +136,7 @@ export const fetchPlace = createAsyncThunk<Place, string>(
 	fetchPlaceAction.type,
 	async (id, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Place> = await axios.get(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${id}`,
-			);
+			const response: AxiosResponse<Place> = await api.get(`/api/places/${id}`);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);
@@ -151,8 +148,8 @@ export const createPlace = createAsyncThunk<Place, PlacePayload>(
 	createPlaceAction.type,
 	async (payload, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Place> = await axios.post(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/`,
+			const response: AxiosResponse<Place> = await api.post(
+				`/api/places/`,
 				payload,
 			);
 			return response.data;
@@ -166,8 +163,8 @@ export const updatePlace = createAsyncThunk<Place, PlaceUpdatePayload>(
 	updatePlaceAction.type,
 	async ({ id, payload }, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Place> = await axios.patch(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${id}`,
+			const response: AxiosResponse<Place> = await api.patch(
+				`/api/places/${id}`,
 				payload,
 			);
 			return response.data;
@@ -181,9 +178,7 @@ export const deletePlace = createAsyncThunk<string, string>(
 	deletePlaceAction.type,
 	async (id, { rejectWithValue }) => {
 		try {
-			await axios.delete(
-				`${(import.meta as any).env.VITE_BACKEND_API}/api/places/${id}`,
-			);
+			await api.delete(`/api/places/${id}`);
 			return id;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);
