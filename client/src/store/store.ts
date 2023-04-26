@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import placeReducer from './features/place/place.slice';
-import tripReducer from './features/trip/trip.slice';
-import notificationReducer from './features/notification/notification.slice';
+import { placeReducer } from '@traveller-ui/features/map/store';
+import { notificationReducer } from '@traveller-ui/features/notification/store';
+import { tripReducer } from '@traveller-ui/features/trip/store';
 
 export const store = configureStore({
 	reducer: {
 		place: placeReducer,
-		trip: tripReducer,
 		notification: notificationReducer,
+		trip: tripReducer,
 	},
 });
 
