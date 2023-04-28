@@ -4,6 +4,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import {
 	Trip,
 	TripPayload,
+	TripState,
 	TripUpdatePayload,
 } from '@traveller-ui/features/trip/types';
 import api from '@traveller-ui/services/api';
@@ -18,14 +19,7 @@ import {
 	updateTripAction,
 } from './trip.actions';
 
-interface PlaceState {
-	trips: PaginatedList<Trip>;
-	trip: Trip | null;
-	loading: boolean;
-	error: string | null;
-}
-
-const initialState: PlaceState = {
+const initialState: TripState = {
 	trips: {
 		count: 0,
 		previous: null,
@@ -37,16 +31,14 @@ const initialState: PlaceState = {
 	error: null,
 };
 
+const LOCAL_STORAGE_KEY = 'trips';
+
 export const tripSlice = createSlice({
 	name: 'TRIP API',
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchTrips.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				fetchTrips.fulfilled,
 				(state, action: PayloadAction<PaginatedList<Trip>>) => {
@@ -55,39 +47,15 @@ export const tripSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(fetchTrips.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(fetchTrip.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(fetchTrip.fulfilled, (state, action: PayloadAction<Trip>) => {
 				state.trip = action.payload;
 				state.loading = false;
-				state.error = null;
-			})
-			.addCase(fetchTrip.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(createTrip.pending, (state) => {
-				state.loading = true;
 				state.error = null;
 			})
 			.addCase(createTrip.fulfilled, (state, action: PayloadAction<Trip>) => {
 				state.trips?.results.push(action.payload);
 				state.trip = action.payload;
 				state.loading = false;
-				state.error = null;
-			})
-			.addCase(createTrip.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(updateTrip.pending, (state) => {
-				state.loading = true;
 				state.error = null;
 			})
 			.addCase(updateTrip.fulfilled, (state, action: PayloadAction<Trip>) => {
@@ -102,14 +70,6 @@ export const tripSlice = createSlice({
 				state.loading = false;
 				state.error = null;
 			})
-			.addCase(updateTrip.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(deleteTrip.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(deleteTrip.fulfilled, (state, action: PayloadAction<string>) => {
 				state.trips.results = state.trips.results.filter(
 					(p) => p.id !== action.payload,
@@ -118,10 +78,15 @@ export const tripSlice = createSlice({
 				state.loading = false;
 				state.error = null;
 			})
-			.addCase(deleteTrip.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			});
+			.addMatcher(
+				(action) =>
+					action.type.endsWith('/pending') || action.type.endsWith('/rejected'),
+				(state, action) => {
+					state.loading = action.meta.requestStatus === 'pending';
+					state.error =
+						action.meta.requestStatus === 'rejected' ? action.payload : null;
+				},
+			);
 	},
 });
 
@@ -132,9 +97,20 @@ export const fetchTrips = createAsyncThunk<PaginatedList<Trip>, number>(
 			const response: AxiosResponse<PaginatedList<Trip>> = await api.get(
 				`/api/trips/?page=${page}`,
 			);
-			return response.data;
+			const data = response.data;
+
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+
+			return data;
 		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
+			const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+			const value = JSON.parse(saved as string) || initialState.trips;
+
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
+
+			return (error as AxiosError).code === 'ERR_NETWORK'
+				? value
+				: rejectWithValue((error as AxiosError).message);
 		}
 	},
 );

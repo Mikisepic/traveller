@@ -4,6 +4,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import {
 	Place,
 	PlacePayload,
+	PlaceState,
 	PlaceUpdatePayload,
 } from '@traveller-ui/features/map/types';
 import api from '@traveller-ui/services/api';
@@ -17,13 +18,6 @@ import {
 	updatePlaceAction,
 } from './place.actions';
 
-interface PlaceState {
-	places: Place[];
-	place: Place | null;
-	loading: boolean;
-	error: string | null;
-}
-
 const initialState: PlaceState = {
 	places: [],
 	place: null,
@@ -31,16 +25,14 @@ const initialState: PlaceState = {
 	error: null,
 };
 
+const LOCAL_STORAGE_KEY = 'places';
+
 export const placeSlice = createSlice({
 	name: 'PLACE API',
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchPlaces.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				fetchPlaces.fulfilled,
 				(state, action: PayloadAction<Place[]>) => {
@@ -49,39 +41,15 @@ export const placeSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(fetchPlaces.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(fetchPlace.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(fetchPlace.fulfilled, (state, action: PayloadAction<Place>) => {
 				state.place = action.payload;
 				state.loading = false;
-				state.error = null;
-			})
-			.addCase(fetchPlace.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(createPlace.pending, (state) => {
-				state.loading = true;
 				state.error = null;
 			})
 			.addCase(createPlace.fulfilled, (state, action: PayloadAction<Place>) => {
 				state.places.push(action.payload);
 				state.place = action.payload;
 				state.loading = false;
-				state.error = null;
-			})
-			.addCase(createPlace.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(updatePlace.pending, (state) => {
-				state.loading = true;
 				state.error = null;
 			})
 			.addCase(updatePlace.fulfilled, (state, action: PayloadAction<Place>) => {
@@ -96,14 +64,6 @@ export const placeSlice = createSlice({
 				state.loading = false;
 				state.error = null;
 			})
-			.addCase(updatePlace.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(deletePlace.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				deletePlace.fulfilled,
 				(state, action: PayloadAction<string>) => {
@@ -113,10 +73,15 @@ export const placeSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(deletePlace.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			});
+			.addMatcher(
+				(action) =>
+					action.type.endsWith('/pending') || action.type.endsWith('/rejected'),
+				(state, action) => {
+					state.loading = action.meta.requestStatus === 'pending';
+					state.error =
+						action.meta.requestStatus === 'rejected' ? action.payload : null;
+				},
+			);
 	},
 });
 
@@ -125,9 +90,20 @@ export const fetchPlaces = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 			const response: AxiosResponse<Place[]> = await api.get(`/api/places/`);
-			return response.data;
+			const data = response.data;
+
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+
+			return data;
 		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
+			const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+			const value = JSON.parse(saved as string) || initialState.places;
+
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
+
+			return (error as AxiosError).code === 'ERR_NETWORK'
+				? value
+				: rejectWithValue((error as AxiosError).message);
 		}
 	},
 );

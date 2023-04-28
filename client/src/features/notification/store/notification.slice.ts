@@ -4,6 +4,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import {
 	Notification,
 	NotificationPayload,
+	NotificationState,
 } from '@traveller-ui/features/notification/types';
 import api from '@traveller-ui/services/api';
 import { RootState } from '@traveller-ui/store';
@@ -15,13 +16,6 @@ import {
 	fetchNotificationAction,
 	fetchNotificationsAction,
 } from './notification.actions';
-
-interface NotificationState {
-	notifications: PaginatedList<Notification>;
-	notification: Notification | null;
-	loading: boolean;
-	error: string | null;
-}
 
 const initialState: NotificationState = {
 	notifications: {
@@ -35,16 +29,14 @@ const initialState: NotificationState = {
 	error: null,
 };
 
+const LOCAL_STORAGE_KEY = 'notifications';
+
 export const notificationSlice = createSlice({
 	name: 'NOTIFICATION API',
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchNotifications.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				fetchNotifications.fulfilled,
 				(state, action: PayloadAction<PaginatedList<Notification>>) => {
@@ -53,14 +45,6 @@ export const notificationSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(fetchNotifications.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(fetchNotification.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				fetchNotification.fulfilled,
 				(state, action: PayloadAction<Notification>) => {
@@ -69,14 +53,6 @@ export const notificationSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(fetchNotification.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(createNotification.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				createNotification.fulfilled,
 				(state, action: PayloadAction<Notification>) => {
@@ -86,14 +62,6 @@ export const notificationSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(createNotification.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			})
-			.addCase(deleteNotification.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
 			.addCase(
 				deleteNotification.fulfilled,
 				(state, action: PayloadAction<string>) => {
@@ -105,10 +73,15 @@ export const notificationSlice = createSlice({
 					state.error = null;
 				},
 			)
-			.addCase(deleteNotification.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string;
-			});
+			.addMatcher(
+				(action) =>
+					action.type.endsWith('/pending') || action.type.endsWith('/rejected'),
+				(state, action) => {
+					state.loading = action.meta.requestStatus === 'pending';
+					state.error =
+						action.meta.requestStatus === 'rejected' ? action.payload : null;
+				},
+			);
 	},
 });
 
@@ -118,9 +91,20 @@ export const fetchNotifications = createAsyncThunk(
 		try {
 			const response: AxiosResponse<PaginatedList<Notification>> =
 				await api.get(`/api/notifications/`);
-			return response.data;
+			const data = response.data;
+
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+
+			return data;
 		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
+			const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+			const value = JSON.parse(saved as string) || initialState.notifications;
+
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
+
+			return (error as AxiosError).code === 'ERR_NETWORK'
+				? value
+				: rejectWithValue((error as AxiosError).message);
 		}
 	},
 );

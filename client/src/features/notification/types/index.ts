@@ -1,4 +1,4 @@
-import { Base } from '@traveller-ui/types';
+import { Base, PaginatedList } from '@traveller-ui/types';
 
 export interface NotificationPayload {
 	title: string;
@@ -6,3 +6,10 @@ export interface NotificationPayload {
 }
 
 export interface Notification extends Base, NotificationPayload {}
+
+export interface NotificationState {
+	notifications: PaginatedList<Notification>;
+	notification: Notification | null;
+	loading: boolean;
+	error: string | null;
+}
