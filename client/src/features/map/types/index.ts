@@ -21,3 +21,10 @@ export interface PlacePayload extends Coordinates {
 export interface PlaceUpdatePayload extends Base {
 	payload: PlacePayload;
 }
+
+export interface PlaceState {
+	places: Place[];
+	place: Place | null;
+	loading: boolean;
+	error: string | null;
+}
