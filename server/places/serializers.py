@@ -5,7 +5,7 @@ from rest_framework import serializers
 from .models import Place
 
 class PlaceSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True, format='hex_verbose')
+    id = serializers.UUIDField(format='hex_verbose')
     title = serializers.CharField(required=True, allow_blank=False, max_length=50)
     description = serializers.CharField(required=False, allow_blank=True, max_length=256)
     lat = serializers.DecimalField(max_digits=8, decimal_places=6, validators=[MaxValueValidator(90.000000), MinValueValidator(-90.000000)])
@@ -18,13 +18,7 @@ class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Place
         fields = ['id', 'title', 'description', 'lat', 'lng', 'priority', 'isBookmarked', 'created_at', 'updated_at']
+        read_only_fields = ['id']
     
     def create(self, validated_data):
         return Place.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.isBookmarked = validated_data.get('isBookmarked', instance.isBookmarked)
-        instance.save()
-        return instance

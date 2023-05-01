@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { InstallComponent } from '@traveller-ui/components/install-pwa';
+import { Install } from '@traveller-ui/components/install-pwa';
+import { Theme } from '@traveller-ui/components/theme';
 import { NotificationWrapper } from '@traveller-ui/features/notification/components';
 import { AppRoute } from '@traveller-ui/types';
 
@@ -28,7 +29,6 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 					</span>
 				</a>
 				<div className="flex items-center justify-between">
-					<InstallComponent />
 					<NotificationWrapper />
 
 					<button
@@ -52,6 +52,8 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 					</button>
 
 					<div className="hidden w-full ml-3 md:flex items-center justify-between md:w-auto">
+						<Install />
+						<Theme />
 						<ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							{routeItems}
 						</ul>
@@ -59,6 +61,10 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 				</div>
 				{collapse && (
 					<div className="block w-full md:hidden">
+						<div className="flex place-content-end">
+							<Install />
+							<Theme />
+						</div>
 						<ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							{routeItems}
 						</ul>

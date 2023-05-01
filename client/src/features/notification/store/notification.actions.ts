@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { NotificationPayload } from '@traveller-ui/features/notification/types';
 
-const SOURCE = 'NOTIFICATION API';
+export const SOURCE = 'NOTIFICATION API';
 
 export const fetchNotificationsAction = createAction(`${SOURCE} Fetch All`);
 export const fetchNotificationAction = createAction<{ id: string }>(

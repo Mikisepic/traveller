@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { BellAlertIcon } from '@heroicons/react/24/outline';
 
+import { LoadingSpinner } from '@traveller-ui/components/loading';
 import {
 	fetchNotifications,
-	selectNotifications,
+	selectNotificationLoading,
 } from '@traveller-ui/features/notification/store';
+import { NotificationListenerContext } from '@traveller-ui/providers/notification-listener';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
 import { NotificationCount } from './notification-count';
 import { NotificationDropdown } from './notification-dropdown';
 
-interface Props {}
+export const NotificationWrapper: React.FC = () => {
+	const { notificationListener } = useContext(NotificationListenerContext);
 
-export const NotificationWrapper: React.FC<Props> = () => {
-	const [show, setShow] = useState(false);
 	const dispatch = useAppDispatch();
-	const notifications = useAppSelector(selectNotifications);
+	const loading = useAppSelector(selectNotificationLoading);
+
+	const [show, setShow] = useState(false);
 
 	const onBellClick = () => setShow(!show);
 
@@ -24,23 +27,28 @@ export const NotificationWrapper: React.FC<Props> = () => {
 		dispatch(fetchNotifications());
 	}, []);
 
+	useEffect(() => {
+		dispatch(fetchNotifications());
+	}, [notificationListener]);
+
 	return (
 		<>
 			{show && (
-				<div className="absolute">
-					<div className="z-10 relative top-28 right-16 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-						<NotificationDropdown notifications={notifications} />
+				<div className="absolute top-[60px] right-1/3">
+					<div className="z-10 max-h-[200px] w-[300px] overflow-auto bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+						{loading && <LoadingSpinner />}
+						<NotificationDropdown />
 					</div>
 				</div>
 			)}
 
 			<button
 				type="button"
-				className="relative inline-flex items-center p-2 mr-4 text-sm font-medium text-center text-white bg-blue-700 rounded-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				className="relative inline-flex items-center p-2 mr-4 text-sm font-medium text-center text-white bg-blue-700 rounded-full hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700"
 				onClick={onBellClick}
 			>
 				<BellAlertIcon className="h-6 w-6 text-white" />
-				<NotificationCount count={notifications.count} />
+				<NotificationCount />
 			</button>
 		</>
 	);

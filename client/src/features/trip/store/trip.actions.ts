@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { TripPayload } from '@traveller-ui/features/trip/types';
 
-const SOURCE = 'TRIP API';
+export const SOURCE = 'TRIP API';
 
 export const fetchTripsAction = createAction<{ page: number }>(
 	`${SOURCE} Fetch All`,

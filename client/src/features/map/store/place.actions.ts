@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { PlacePayload } from '@traveller-ui/features/map/types';
 
-const SOURCE = 'PLACE API';
+export const SOURCE = 'PLACE API';
 
 export const fetchPlacesAction = createAction(`${SOURCE} Fetch All`);
 export const fetchPlaceAction = createAction<{ id: string }>(

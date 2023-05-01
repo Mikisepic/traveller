@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError, AxiosResponse } from 'axios';
 
 import {
@@ -11,6 +11,7 @@ import api from '@traveller-ui/services/api';
 import { RootState } from '@traveller-ui/store';
 
 import {
+	SOURCE,
 	createPlaceAction,
 	deletePlaceAction,
 	fetchPlaceAction,
@@ -28,9 +29,13 @@ const initialState: PlaceState = {
 const LOCAL_STORAGE_KEY = 'places';
 
 export const placeSlice = createSlice({
-	name: 'PLACE API',
+	name: SOURCE,
 	initialState,
-	reducers: {},
+	reducers: {
+		cleanPlaces: (state) => {
+			Object.assign(state, initialState);
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(
@@ -75,7 +80,9 @@ export const placeSlice = createSlice({
 			)
 			.addMatcher(
 				(action) =>
-					action.type.endsWith('/pending') || action.type.endsWith('/rejected'),
+					action.type.includes(SOURCE) &&
+					(action.type.endsWith('/pending') ||
+						action.type.endsWith('/rejected')),
 				(state, action) => {
 					state.loading = action.meta.requestStatus === 'pending';
 					state.error =
@@ -85,11 +92,13 @@ export const placeSlice = createSlice({
 	},
 });
 
-export const fetchPlaces = createAsyncThunk(
+export const fetchPlaces = createAsyncThunk<Place[]>(
 	fetchPlacesAction.type,
 	async (_, { rejectWithValue }) => {
 		try {
-			const response: AxiosResponse<Place[]> = await api.get(`/api/places/`);
+			const response: AxiosResponse<Place[]> = await api.get(
+				`/api/places?paginate=false`,
+			);
 			const data = response.data;
 
 			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
@@ -166,5 +175,6 @@ export const selectPlaces = (state: RootState) => state.place.places;
 export const selectPlace = (state: RootState) => state.place.place;
 export const selectPlaceLoading = (state: RootState) => state.place.loading;
 export const selectPlaceError = (state: RootState) => state.place.error;
+export const { cleanPlaces } = placeSlice.actions;
 
 export default placeSlice.reducer;

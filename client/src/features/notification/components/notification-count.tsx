@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface Props {
-	count: number;
-}
+import { selectNotifications } from '@traveller-ui/features/notification/store';
+import { useAppSelector } from '@traveller-ui/store';
 
-export const NotificationCount: React.FC<Props> = ({ count }) => {
+export const NotificationCount: React.FC = () => {
+	const notifications = useAppSelector(selectNotifications);
 	return (
 		<div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -right-3 dark:border-gray-900">
-			{count}
+			{notifications.count}
 		</div>
 	);
 };

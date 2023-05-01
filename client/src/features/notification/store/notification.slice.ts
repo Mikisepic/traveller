@@ -11,6 +11,7 @@ import { RootState } from '@traveller-ui/store';
 import { PaginatedList } from '@traveller-ui/types';
 
 import {
+	SOURCE,
 	createNotificationAction,
 	deleteNotificationAction,
 	fetchNotificationAction,
@@ -32,7 +33,7 @@ const initialState: NotificationState = {
 const LOCAL_STORAGE_KEY = 'notifications';
 
 export const notificationSlice = createSlice({
-	name: 'NOTIFICATION API',
+	name: SOURCE,
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
@@ -75,7 +76,9 @@ export const notificationSlice = createSlice({
 			)
 			.addMatcher(
 				(action) =>
-					action.type.endsWith('/pending') || action.type.endsWith('/rejected'),
+					action.type.includes(SOURCE) &&
+					(action.type.endsWith('/pending') ||
+						action.type.endsWith('/rejected')),
 				(state, action) => {
 					state.loading = action.meta.requestStatus === 'pending';
 					state.error =

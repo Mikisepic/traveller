@@ -1,30 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
 	BookmarkIcon,
 	BookmarkSlashIcon,
-	TrashIcon,
 	StarIcon,
+	TrashIcon,
 } from '@heroicons/react/24/outline';
 import Map, { MapLayerMouseEvent, Marker, Popup } from 'react-map-gl';
 
+import { Button } from '@traveller-ui/components/button';
 import { LoadingSpinner } from '@traveller-ui/components/loading';
 import {
+	cleanPlaces,
+	deletePlace,
 	fetchPlace,
 	fetchPlaces,
-	selectPlaces,
-	selectPlaceError,
-	selectPlaceLoading,
 	selectPlace,
+	selectPlaceLoading,
+	selectPlaces,
 	updatePlace,
-	deletePlace,
 } from '@traveller-ui/features/map/store';
 import {
-	Place,
 	Coordinates,
-	Viewport,
+	Place,
 	PlacePayload,
+	Viewport,
 } from '@traveller-ui/features/map/types';
+import { createNotification } from '@traveller-ui/features/notification/store';
+import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
 import { PopupDialog } from './popup-dialog';
@@ -34,11 +37,12 @@ interface Props {
 }
 
 export const MapWrapper: React.FC<Props> = ({ style }) => {
+	const { setNotificationListener } = useContext(NotificationListenerContext);
+
 	const dispatch = useAppDispatch();
 	const places = useAppSelector(selectPlaces);
 	const place = useAppSelector(selectPlace);
 	const loading = useAppSelector(selectPlaceLoading);
-	const error = useAppSelector(selectPlaceError);
 
 	// Map
 	const [viewport, setViewport] = useState<Viewport>({
@@ -54,6 +58,12 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 
 	useEffect(() => {
 		dispatch(fetchPlaces());
+	}, []);
+
+	useEffect(() => {
+		return () => {
+			dispatch(cleanPlaces());
+		};
 	}, []);
 
 	const handleStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -76,8 +86,16 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: string, title: string) => {
 		dispatch(deletePlace(id));
+		dispatch(
+			createNotification({
+				title: `Location ${title} Deleted!`,
+				body: 'You have deleted a location.',
+			}),
+		);
+
+		setNotificationListener(Math.random() * 100);
 	};
 
 	const handleBookmarking = async (p: Place) => {
@@ -91,12 +109,20 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		};
 
 		dispatch(updatePlace({ id: p.id, payload }));
+		dispatch(
+			createNotification({
+				title: `Location ${p.title} Bookmarked!`,
+				body: 'You have bookmarked a location.',
+			}),
+		);
+
+		setNotificationListener(Math.random() * 100);
 	};
 
 	return (
 		<>
-      {loading && <LoadingSpinner />}
-      
+			{loading && <LoadingSpinner />}
+
 			<div className={loading ? 'opacity-20' : ''}>
 				<div className="mb-5">
 					<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -170,25 +196,17 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 									<StarIcon className="w-8 h-8 text-yellow-400" />
 								</div>
 
-								<button
-									type="button"
-									className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700"
-									onClick={() => handleDelete(place.id)}
-								>
+								<Button onClick={() => handleDelete(place.id, place.title)}>
 									<TrashIcon className="h-6 w-6 text-white" />
-								</button>
+								</Button>
 
-								<button
-									type="button"
-									className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-									onClick={() => handleBookmarking(place)}
-								>
+								<Button onClick={() => handleBookmarking(place)}>
 									{place.isBookmarked ? (
 										<BookmarkSlashIcon className="h-6 w-6 text-white" />
 									) : (
 										<BookmarkIcon className="h-6 w-6 text-white" />
 									)}
-								</button>
+								</Button>
 							</div>
 						</Popup>
 					)}

@@ -18,25 +18,10 @@ class TripSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         locations_data = validated_data.pop('locations')
-
-        trip = Trip(**validated_data)
-        trip.save()
-
+        
+        trip = Trip.objects.create(**validated_data)
         for location_data in locations_data:
-            location = Place.objects.create(**location_data)
+            location = Place.objects.get(id=location_data['id'])
+            
             trip.locations.add(location)
-
         return trip
-
-
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-
-        locations_data = validated_data.pop('locations')
-        for location_data in locations_data:
-            location = Place.objects.create(**location_data)
-            instance.locations.add(location)
-
-        instance.save()
-        return instance

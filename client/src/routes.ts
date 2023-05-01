@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Trip } from './pages/trip';
 import { Map } from './pages/map';
 import { Bookmark } from './pages/bookmark';

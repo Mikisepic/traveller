@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { Coordinates, PlacePayload } from '@traveller-ui/features/map/types';
+import { Button } from '@traveller-ui/components/button';
 import { createPlace } from '@traveller-ui/features/map/store';
+import { Coordinates, PlacePayload } from '@traveller-ui/features/map/types';
+import { createNotification } from '@traveller-ui/features/notification/store';
+import { NotificationListenerContext } from '@traveller-ui/providers/';
 import { useAppDispatch } from '@traveller-ui/store';
 
 interface Props {
@@ -10,6 +13,8 @@ interface Props {
 }
 
 export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
+	const { setNotificationListener } = useContext(NotificationListenerContext);
+
 	const dispatch = useAppDispatch();
 
 	const [title, setTitle] = useState<string | null>(null);
@@ -39,6 +44,14 @@ export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
 			};
 
 			dispatch(createPlace(payload));
+			dispatch(
+				createNotification({
+					title: 'New Location Created!',
+					body: 'You have created a new instance.',
+				}),
+			);
+
+			setNotificationListener(Math.random() * 100);
 			setNewPlace(null);
 		}
 	};
@@ -91,12 +104,7 @@ export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
 					/>
 				</div>
 
-				<button
-					type="submit"
-					className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-				>
-					Submit
-				</button>
+				<Button type="submit">Submit</Button>
 			</form>
 		</div>
 	);

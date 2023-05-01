@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError, AxiosResponse } from 'axios';
 
 import {
@@ -12,6 +12,7 @@ import { RootState } from '@traveller-ui/store';
 import { PaginatedList } from '@traveller-ui/types';
 
 import {
+	SOURCE,
 	createTripAction,
 	deleteTripAction,
 	fetchTripAction,
@@ -34,9 +35,13 @@ const initialState: TripState = {
 const LOCAL_STORAGE_KEY = 'trips';
 
 export const tripSlice = createSlice({
-	name: 'TRIP API',
+	name: SOURCE,
 	initialState,
-	reducers: {},
+	reducers: {
+		cleanTrips: (state) => {
+			Object.assign(state, initialState);
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(
@@ -80,7 +85,9 @@ export const tripSlice = createSlice({
 			})
 			.addMatcher(
 				(action) =>
-					action.type.endsWith('/pending') || action.type.endsWith('/rejected'),
+					action.type.includes(SOURCE) &&
+					(action.type.endsWith('/pending') ||
+						action.type.endsWith('/rejected')),
 				(state, action) => {
 					state.loading = action.meta.requestStatus === 'pending';
 					state.error =
@@ -173,5 +180,6 @@ export const selectTrips = (state: RootState) => state.trip.trips;
 export const selectTrip = (state: RootState) => state.trip.trip;
 export const selectTripLoading = (state: RootState) => state.trip.loading;
 export const selectTripError = (state: RootState) => state.trip.error;
+export const { cleanTrips } = tripSlice.actions;
 
 export default tripSlice.reducer;
