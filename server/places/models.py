@@ -1,10 +1,12 @@
+import uuid
+
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-import uuid
-
 class Place(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, related_name='places', on_delete=models.CASCADE, default=None)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=256)
     lat = models.DecimalField(max_digits=8, decimal_places=6, validators=[MaxValueValidator(90.000000), MinValueValidator(-90.000000)])

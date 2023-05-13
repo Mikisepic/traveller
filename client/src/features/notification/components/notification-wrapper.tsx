@@ -34,8 +34,8 @@ export const NotificationWrapper: React.FC = () => {
 	return (
 		<>
 			{show && (
-				<div className="absolute top-[60px] right-1/3">
-					<div className="z-10 max-h-[200px] w-[300px] overflow-auto bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+				<div className="relative">
+					<div className="absolute top-[30px] right-[-30px] z-10 max-h-[200px] w-[300px] overflow-auto bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
 						{loading && <LoadingSpinner />}
 						<NotificationDropdown />
 					</div>

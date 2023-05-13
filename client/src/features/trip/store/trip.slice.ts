@@ -32,8 +32,6 @@ const initialState: TripState = {
 	error: null,
 };
 
-const LOCAL_STORAGE_KEY = 'trips';
-
 export const tripSlice = createSlice({
 	name: SOURCE,
 	initialState,
@@ -104,20 +102,9 @@ export const fetchTrips = createAsyncThunk<PaginatedList<Trip>, number>(
 			const response: AxiosResponse<PaginatedList<Trip>> = await api.get(
 				`/api/trips/?page=${page}`,
 			);
-			const data = response.data;
-
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-
-			return data;
+			return response.data;
 		} catch (error) {
-			const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-			const value = JSON.parse(saved as string) || initialState.trips;
-
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
-
-			return (error as AxiosError).code === 'ERR_NETWORK'
-				? value
-				: rejectWithValue((error as AxiosError).message);
+			return rejectWithValue((error as AxiosError).message);
 		}
 	},
 );

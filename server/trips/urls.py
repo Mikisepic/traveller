@@ -1,8 +1,12 @@
-from django.urls import path
+from django.urls import include, path
 
-from . import views
+from rest_framework.routers import DefaultRouter
+
+from trips.views import TripViewSet
+
+router = DefaultRouter()
+router.register('', TripViewSet, basename='trip')
 
 urlpatterns = [
-    path('', views.TripCreateAPIView.as_view()),
-    path('<uuid:pk>', views.TripDetailsAPIView.as_view()),
+    path('', include(router.urls))
 ]

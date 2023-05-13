@@ -143,25 +143,35 @@ export const TripItem = () => {
 							Locations
 						</label>
 						<ul className="max-w-md max-h-[200px] overflow-y-auto space-y-1 text-gray-500 list-none list-inside dark:text-gray-400">
-							{places.length > 0
-								? places.map((place, index) => (
+							{isNew
+								? places.length > 0
+									? places.map((place, index) => (
+											<li key={index}>
+												<div className="flex items-center mb-4">
+													<button
+														type="button"
+														className="flex gap-5"
+														onClick={() => handleCheckboxClick(place)}
+													>
+														<CheckCircleIcon
+															className={[
+																'h-6 w-6 border rounded-full text-white',
+																locations.indexOf(place) > -1
+																	? 'bg-green-500'
+																	: 'bg-red-500',
+															].join(' ')}
+														/>
+														{place.title}
+													</button>
+												</div>
+											</li>
+									  ))
+									: 'No locations'
+								: !!trip && trip.locations.length > 0
+								? trip.locations.map((place, index) => (
 										<li key={index}>
 											<div className="flex items-center mb-4">
-												<button
-													type="button"
-													className="flex gap-5"
-													onClick={() => handleCheckboxClick(place)}
-												>
-													<CheckCircleIcon
-														className={[
-															'h-6 w-6 border rounded-full text-white',
-															locations.indexOf(place) > -1
-																? 'bg-green-500'
-																: 'bg-red-500',
-														].join(' ')}
-													/>
-													{place.title}
-												</button>
+												{place.title}
 											</div>
 										</li>
 								  ))

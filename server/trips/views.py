@@ -1,24 +1,18 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
 
-from .models import Trip
-from places.models import Place
-from .serializers import TripSerializer
+from trips.models import Trip
+from trips.permissions import IsOwnerOrReadOnly
+from trips.serializers import TripSerializer
 
-class TripCreateAPIView(ListCreateAPIView):
+class TripViewSet(viewsets.ModelViewSet):
+    queryset = Trip.objects.all()
     serializer_class = TripSerializer
     pagination_class = PageNumberPagination
-    queryset = Trip.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
-class TripDetailsAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = TripSerializer
-    queryset = Trip.objects.all()
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.title = request.data.get('title', instance.title)
-        instance.description = request.data.get('description', instance.description)
-        instance.save()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -26,8 +26,6 @@ const initialState: PlaceState = {
 	error: null,
 };
 
-const LOCAL_STORAGE_KEY = 'places';
-
 export const placeSlice = createSlice({
 	name: SOURCE,
 	initialState,
@@ -99,20 +97,9 @@ export const fetchPlaces = createAsyncThunk<Place[]>(
 			const response: AxiosResponse<Place[]> = await api.get(
 				`/api/places?paginate=false`,
 			);
-			const data = response.data;
-
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-
-			return data;
+			return response.data;
 		} catch (error) {
-			const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-			const value = JSON.parse(saved as string) || initialState.places;
-
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
-
-			return (error as AxiosError).code === 'ERR_NETWORK'
-				? value
-				: rejectWithValue((error as AxiosError).message);
+			return rejectWithValue((error as AxiosError).message);
 		}
 	},
 );

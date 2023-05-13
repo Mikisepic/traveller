@@ -1,14 +1,18 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 
-from .models import Notification
-from .serializers import NotificationSerializer
+from notifications.models import Notification
+from notifications.permissions import IsOwnerOrReadOnly
+from notifications.serializers import NotificationSerializer
 
-class NotificationCreateAPIView(ListCreateAPIView):
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
     pagination_class = PageNumberPagination
-    serializer_class = NotificationSerializer
-    queryset = Notification.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-class NotificationDetailsAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = NotificationSerializer
-    queryset = Notification.objects.all()
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)

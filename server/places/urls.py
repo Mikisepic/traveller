@@ -1,8 +1,12 @@
-from django.urls import path
+from django.urls import include, path
 
-from . import views
+from rest_framework.routers import DefaultRouter
+
+from places.views import PlaceViewSet
+
+router = DefaultRouter()
+router.register('', PlaceViewSet, basename='place')
 
 urlpatterns = [
-    path('', views.PlaceCreateAPIView.as_view()),
-    path('<uuid:pk>', views.PlaceDetailsAPIView.as_view()),
+    path('', include(router.urls))
 ]

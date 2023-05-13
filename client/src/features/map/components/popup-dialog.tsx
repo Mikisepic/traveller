@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { Button } from '@traveller-ui/components/button';
 import { createPlace } from '@traveller-ui/features/map/store';
-import { Coordinates, PlacePayload } from '@traveller-ui/features/map/types';
+import { Coordinates, Place } from '@traveller-ui/features/map/types';
 import { createNotification } from '@traveller-ui/features/notification/store';
 import { NotificationListenerContext } from '@traveller-ui/providers/';
 import { useAppDispatch } from '@traveller-ui/store';
@@ -34,7 +36,8 @@ export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
 		e.preventDefault();
 
 		if (newPlace && title && description && priority) {
-			const payload: PlacePayload = {
+			const payload: Place = {
+				id: uuidv4(),
 				title,
 				description,
 				lat: parseFloat(newPlace.lat.toFixed(6)),

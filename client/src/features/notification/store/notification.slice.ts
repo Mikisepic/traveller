@@ -14,7 +14,6 @@ import {
 	SOURCE,
 	createNotificationAction,
 	deleteNotificationAction,
-	fetchNotificationAction,
 	fetchNotificationsAction,
 } from './notification.actions';
 
@@ -30,8 +29,6 @@ const initialState: NotificationState = {
 	error: null,
 };
 
-const LOCAL_STORAGE_KEY = 'notifications';
-
 export const notificationSlice = createSlice({
 	name: SOURCE,
 	initialState,
@@ -42,14 +39,6 @@ export const notificationSlice = createSlice({
 				fetchNotifications.fulfilled,
 				(state, action: PayloadAction<PaginatedList<Notification>>) => {
 					state.notifications = action.payload;
-					state.loading = false;
-					state.error = null;
-				},
-			)
-			.addCase(
-				fetchNotification.fulfilled,
-				(state, action: PayloadAction<Notification>) => {
-					state.notification = action.payload;
 					state.loading = false;
 					state.error = null;
 				},
@@ -94,31 +83,6 @@ export const fetchNotifications = createAsyncThunk(
 		try {
 			const response: AxiosResponse<PaginatedList<Notification>> =
 				await api.get(`/api/notifications/`);
-			const data = response.data;
-
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-
-			return data;
-		} catch (error) {
-			const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-			const value = JSON.parse(saved as string) || initialState.notifications;
-
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
-
-			return (error as AxiosError).code === 'ERR_NETWORK'
-				? value
-				: rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
-
-export const fetchNotification = createAsyncThunk<Notification, string>(
-	fetchNotificationAction.type,
-	async (id, { rejectWithValue }) => {
-		try {
-			const response: AxiosResponse<Notification> = await api.get(
-				`/api/notifications/${id}`,
-			);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue((error as AxiosError).message);

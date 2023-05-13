@@ -1,8 +1,8 @@
 stages:
   - build_client_stage
-  - deploy_client_stage
+  # - deploy_client_stage
   - build_server_stage
-  - deploy_server_stage
+  # - deploy_server_stage
 
 client:build:
   stage: build_client_stage
@@ -15,21 +15,15 @@ client:build:
     paths:
       - client/dist/
 
-client:deploy:
-  stage: deploy_client_stage
-  image: node:18
-  environment: production
-  # before_script:
-  #   - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
-  #   - eval $(ssh-agent -s)
-  #   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-  #   - mkdir -p ~/.ssh
-  #   - chmod 700 ~/.ssh
-  #   - ssh-keyscan $DEPLOY_SERVER_ADDRESS >> ~/.ssh/known_hosts
-  #   - chmod 644 ~/.ssh/known_hosts
-  script:
-    # - scp -P $DEPLOY_SERVER_PORT -r client/dist/ $DEPLOY_SERVER_USER@$DEPLOY_SERVER_ADDRESS:/home/mipu7431
-    - echo "Not implemented yet"
+# client:deploy:
+#   stage: deploy_client_stage
+#   image: debian:bullseye
+#   environment: production
+#   script:
+#     - apt update
+#     - apt install sudo -y
+#     - sudo apt install sshpass -y
+#     - sudo sshpass -p $DEPLOY_SERVER_PW scp -r client/dist/* $DEPLOY_SERVER_USER@$DEPLOY_SERVER_ADDRESS:/home/mipu7431
 
 server:build:
   stage: build_server_stage
@@ -41,9 +35,8 @@ server:build:
   artifacts:
     paths:
       - .env
-
-server:deploy:
-  stage: deploy_server_stage
-  image: python:3.9
-  environment: production
-  script: echo "Not implemented yet"
+# server:deploy:
+#   stage: deploy_server_stage
+#   image: python:3.9
+#   environment: production
+#   script: echo "Not implemented yet"

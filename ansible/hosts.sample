@@ -1,2 +1,0 @@
-[hostname]
-ip_address ansible_user=ansible_user ansible_password=ansible_password
