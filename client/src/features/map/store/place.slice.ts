@@ -1,23 +1,9 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AxiosError, AxiosResponse } from 'axios';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import {
-	Place,
-	PlacePayload,
-	PlaceState,
-	PlaceUpdatePayload,
-} from '@traveller-ui/features/map/types';
-import api from '@traveller-ui/services/api';
+import { Place, PlaceState } from '@traveller-ui/features/map/types';
 import { RootState } from '@traveller-ui/store';
 
-import {
-	SOURCE,
-	createPlaceAction,
-	deletePlaceAction,
-	fetchPlaceAction,
-	fetchPlacesAction,
-	updatePlaceAction,
-} from './place.actions';
+const SOURCE = 'PLACE API';
 
 const initialState: PlaceState = {
 	places: [],
@@ -30,138 +16,41 @@ export const placeSlice = createSlice({
 	name: SOURCE,
 	initialState,
 	reducers: {
-		cleanPlaces: (state) => {
+		setPlaces: (state, action: PayloadAction<Place[]>) => {
+			state.places = action.payload;
+			state.loading = false;
+			state.error = null;
+		},
+		setPlacesLoading: (state) => {
+			state.loading = true;
+			state.error = null;
+		},
+		setPlace: (state, action: PayloadAction<Place | null>) => {
+			state.place = action.payload;
+			state.loading = false;
+			state.error = null;
+		},
+		setPlaceError: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+		clearPlaceState: (state) => {
 			Object.assign(state, initialState);
 		},
 	},
-	extraReducers: (builder) => {
-		builder
-			.addCase(
-				fetchPlaces.fulfilled,
-				(state, action: PayloadAction<Place[]>) => {
-					state.places = action.payload;
-					state.loading = false;
-					state.error = null;
-				},
-			)
-			.addCase(fetchPlace.fulfilled, (state, action: PayloadAction<Place>) => {
-				state.place = action.payload;
-				state.loading = false;
-				state.error = null;
-			})
-			.addCase(createPlace.fulfilled, (state, action: PayloadAction<Place>) => {
-				state.places.push(action.payload);
-				state.place = action.payload;
-				state.loading = false;
-				state.error = null;
-			})
-			.addCase(updatePlace.fulfilled, (state, action: PayloadAction<Place>) => {
-				state.places = state.places.map((p) => {
-					if (p.id === action.payload.id) {
-						p = action.payload;
-					}
-
-					return p;
-				});
-				state.place = action.payload;
-				state.loading = false;
-				state.error = null;
-			})
-			.addCase(
-				deletePlace.fulfilled,
-				(state, action: PayloadAction<string>) => {
-					state.places = state.places.filter((p) => p.id !== action.payload);
-					state.place = null;
-					state.loading = false;
-					state.error = null;
-				},
-			)
-			.addMatcher(
-				(action) =>
-					action.type.includes(SOURCE) &&
-					(action.type.endsWith('/pending') ||
-						action.type.endsWith('/rejected')),
-				(state, action) => {
-					state.loading = action.meta.requestStatus === 'pending';
-					state.error =
-						action.meta.requestStatus === 'rejected' ? action.payload : null;
-				},
-			);
-	},
 });
-
-export const fetchPlaces = createAsyncThunk<Place[]>(
-	fetchPlacesAction.type,
-	async (_, { rejectWithValue }) => {
-		try {
-			const response: AxiosResponse<Place[]> = await api.get(
-				`/api/places?paginate=false`,
-			);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
-
-export const fetchPlace = createAsyncThunk<Place, string>(
-	fetchPlaceAction.type,
-	async (id, { rejectWithValue }) => {
-		try {
-			const response: AxiosResponse<Place> = await api.get(`/api/places/${id}`);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
-
-export const createPlace = createAsyncThunk<Place, PlacePayload>(
-	createPlaceAction.type,
-	async (payload, { rejectWithValue }) => {
-		try {
-			const response: AxiosResponse<Place> = await api.post(
-				`/api/places/`,
-				payload,
-			);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
-
-export const updatePlace = createAsyncThunk<Place, PlaceUpdatePayload>(
-	updatePlaceAction.type,
-	async ({ id, payload }, { rejectWithValue }) => {
-		try {
-			const response: AxiosResponse<Place> = await api.patch(
-				`/api/places/${id}`,
-				payload,
-			);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
-
-export const deletePlace = createAsyncThunk<string, string>(
-	deletePlaceAction.type,
-	async (id, { rejectWithValue }) => {
-		try {
-			await api.delete(`/api/places/${id}`);
-			return id;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
 
 export const selectPlaces = (state: RootState) => state.place.places;
 export const selectPlace = (state: RootState) => state.place.place;
 export const selectPlaceLoading = (state: RootState) => state.place.loading;
 export const selectPlaceError = (state: RootState) => state.place.error;
-export const { cleanPlaces } = placeSlice.actions;
+
+export const {
+	setPlaces,
+	setPlacesLoading,
+	setPlace,
+	setPlaceError,
+	clearPlaceState,
+} = placeSlice.actions;
 
 export default placeSlice.reducer;

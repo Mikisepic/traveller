@@ -16,6 +16,10 @@ class PlaceViewSet(viewsets.ModelViewSet):
     filterset_fields = ['isBookmarked']
     
     def get_queryset(self):
+        paginate = self.request.query_params.get('paginate', 'true')
+  
+        if paginate.lower() == 'false':
+            self.pagination_class = None
         return self.queryset.filter(user=self.request.user)
     
     def perform_create(self, serializer):

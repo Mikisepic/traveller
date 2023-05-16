@@ -4,12 +4,13 @@ import { BellAlertIcon } from '@heroicons/react/24/outline';
 
 import { LoadingSpinner } from '@traveller-ui/components/loading';
 import {
-	fetchNotifications,
 	selectNotificationLoading,
+	setNotificationsLoading,
 } from '@traveller-ui/features/notification/store';
 import { NotificationListenerContext } from '@traveller-ui/providers/notification-listener';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
+import { fetchNotifications } from '../services';
 import { NotificationCount } from './notification-count';
 import { NotificationDropdown } from './notification-dropdown';
 
@@ -24,11 +25,13 @@ export const NotificationWrapper: React.FC = () => {
 	const onBellClick = () => setShow(!show);
 
 	useEffect(() => {
-		dispatch(fetchNotifications());
+		dispatch(setNotificationsLoading());
+		fetchNotifications();
 	}, []);
 
 	useEffect(() => {
-		dispatch(fetchNotifications());
+		dispatch(setNotificationsLoading());
+		fetchNotifications();
 	}, [notificationListener]);
 
 	return (

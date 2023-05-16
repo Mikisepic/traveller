@@ -10,16 +10,15 @@ import {
 	selectBookmarkLoading,
 	selectBookmarks,
 } from '@traveller-ui/features/bookmark/store';
-import { updatePlace } from '@traveller-ui/features/map/store';
+import { updatePlace } from '@traveller-ui/features/map/services';
 import { Place, PlacePayload } from '@traveller-ui/features/map/types';
-import { createNotification } from '@traveller-ui/features/notification/store';
+import { createNotification } from '@traveller-ui/features/notification/services';
 import { NotificationListenerContext } from '@traveller-ui/providers';
-import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+import { useAppSelector } from '@traveller-ui/store';
 
 export const BookmarkList: React.FC = () => {
 	const { setNotificationListener } = useContext(NotificationListenerContext);
 
-	const dispatch = useAppDispatch();
 	const bookmarks = useAppSelector(selectBookmarks);
 	const loading = useAppSelector(selectBookmarkLoading);
 
@@ -39,13 +38,12 @@ export const BookmarkList: React.FC = () => {
 			isBookmarked: !p.isBookmarked,
 		};
 
-		dispatch(updatePlace({ id: p.id, payload }));
-		dispatch(
-			createNotification({
-				title: `${p.title} Unbookmarked!`,
-				body: 'You have unbookmarked a location.',
-			}),
-		);
+		updatePlace(p.id, payload);
+
+		createNotification({
+			title: `${p.title} Unbookmarked!`,
+			body: 'You have unbookmarked a location.',
+		});
 
 		setNotificationListener(Math.random() * 100);
 	};

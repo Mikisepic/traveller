@@ -3,6 +3,7 @@ import React from 'react';
 interface Props {
 	type?: 'button' | 'submit';
 	theme?: 'primary' | 'danger';
+	disabled?: boolean;
 	children: React.ReactNode;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
@@ -10,12 +11,14 @@ interface Props {
 export const Button: React.FC<Props> = ({
 	children,
 	theme = 'primary',
+	disabled = false,
 	onClick,
 	type = 'button',
 }) => {
 	return (
 		<button
 			type={type}
+			disabled={disabled}
 			className={
 				theme === 'primary'
 					? 'p-2 text-sm font-medium text-center text-white bg-blue-700 rounded-full hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700  mr-4'

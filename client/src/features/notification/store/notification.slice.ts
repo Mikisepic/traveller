@@ -1,21 +1,13 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AxiosError, AxiosResponse } from 'axios';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import {
 	Notification,
-	NotificationPayload,
 	NotificationState,
 } from '@traveller-ui/features/notification/types';
-import api from '@traveller-ui/services/api';
 import { RootState } from '@traveller-ui/store';
 import { PaginatedList } from '@traveller-ui/types';
 
-import {
-	SOURCE,
-	createNotificationAction,
-	deleteNotificationAction,
-	fetchNotificationsAction,
-} from './notification.actions';
+const SOURCE = 'NOTIFICATION API';
 
 const initialState: NotificationState = {
 	notifications: {
@@ -32,90 +24,33 @@ const initialState: NotificationState = {
 export const notificationSlice = createSlice({
 	name: SOURCE,
 	initialState,
-	reducers: {},
-	extraReducers: (builder) => {
-		builder
-			.addCase(
-				fetchNotifications.fulfilled,
-				(state, action: PayloadAction<PaginatedList<Notification>>) => {
-					state.notifications = action.payload;
-					state.loading = false;
-					state.error = null;
-				},
-			)
-			.addCase(
-				createNotification.fulfilled,
-				(state, action: PayloadAction<Notification>) => {
-					state.notifications.results.push(action.payload);
-					state.notification = action.payload;
-					state.loading = false;
-					state.error = null;
-				},
-			)
-			.addCase(
-				deleteNotification.fulfilled,
-				(state, action: PayloadAction<string>) => {
-					state.notifications.results = state.notifications.results.filter(
-						(p) => p.id !== action.payload,
-					);
-					state.notification = null;
-					state.loading = false;
-					state.error = null;
-				},
-			)
-			.addMatcher(
-				(action) =>
-					action.type.includes(SOURCE) &&
-					(action.type.endsWith('/pending') ||
-						action.type.endsWith('/rejected')),
-				(state, action) => {
-					state.loading = action.meta.requestStatus === 'pending';
-					state.error =
-						action.meta.requestStatus === 'rejected' ? action.payload : null;
-				},
-			);
+	reducers: {
+		setNotifications: (
+			state,
+			action: PayloadAction<PaginatedList<Notification>>,
+		) => {
+			state.notifications = action.payload;
+			state.loading = false;
+			state.error = null;
+		},
+		setNotificationsLoading: (state) => {
+			state.loading = true;
+			state.error = null;
+		},
+		setNotification: (state, action: PayloadAction<Notification | null>) => {
+			state.notification = action.payload;
+			state.loading = false;
+			state.error = null;
+		},
+		setNotificationError: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+		clearNotificationState: (state) => {
+			Object.assign(state, initialState);
+		},
 	},
 });
-
-export const fetchNotifications = createAsyncThunk(
-	fetchNotificationsAction.type,
-	async (_, { rejectWithValue }) => {
-		try {
-			const response: AxiosResponse<PaginatedList<Notification>> =
-				await api.get(`/api/notifications/`);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
-
-export const createNotification = createAsyncThunk<
-	Notification,
-	NotificationPayload
->(createNotificationAction.type, async (payload, { rejectWithValue }) => {
-	try {
-		const response: AxiosResponse<Notification> = await api.post(
-			`/api/notifications/`,
-			payload,
-		);
-		return response.data;
-	} catch (error) {
-		return rejectWithValue((error as AxiosError).message);
-	}
-});
-
-export const deleteNotification = createAsyncThunk<string, string>(
-	deleteNotificationAction.type,
-	async (id, { rejectWithValue }) => {
-		try {
-			await api.delete(`/api/notifications/${id}`);
-			return id;
-		} catch (error) {
-			return rejectWithValue((error as AxiosError).message);
-		}
-	},
-);
 
 export const selectNotifications = (state: RootState) =>
 	state.notification.notifications;
@@ -125,5 +60,13 @@ export const selectNotificationLoading = (state: RootState) =>
 	state.notification.loading;
 export const selectNotificationError = (state: RootState) =>
 	state.notification.error;
+
+export const {
+	setNotifications,
+	setNotificationsLoading,
+	setNotification,
+	setNotificationError,
+	clearNotificationState,
+} = notificationSlice.actions;
 
 export default notificationSlice.reducer;

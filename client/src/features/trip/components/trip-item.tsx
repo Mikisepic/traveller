@@ -4,18 +4,19 @@ import { useLocation } from 'react-router-dom';
 import { CheckCircleIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@traveller-ui/components/button';
-import { fetchPlaces, selectPlaces } from '@traveller-ui/features/map/store';
-import { Place } from '@traveller-ui/features/map/types';
-import { createNotification } from '@traveller-ui/features/notification/store';
+import { fetchPlaces } from '@traveller-ui/features/map/services';
 import {
-	createTrip,
-	fetchTrip,
-	selectTrip,
-	updateTrip,
-} from '@traveller-ui/features/trip/store';
+	selectPlaces,
+	setPlacesLoading,
+} from '@traveller-ui/features/map/store';
+import { Place } from '@traveller-ui/features/map/types';
+import { createNotification } from '@traveller-ui/features/notification/services';
+import { selectTrip, setTripsLoading } from '@traveller-ui/features/trip/store';
 import { TripPayload } from '@traveller-ui/features/trip/types';
 import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+
+import { createTrip, fetchTrip, updateTrip } from '../services';
 
 export const TripItem = () => {
 	const { setNotificationListener } = useContext(NotificationListenerContext);
@@ -33,8 +34,12 @@ export const TripItem = () => {
 	const [description, setDescription] = useState<string>('');
 
 	useEffect(() => {
-		dispatch(fetchPlaces());
-		if (!isNew) dispatch(fetchTrip(pathname.split('/').pop() as string));
+		dispatch(setPlacesLoading());
+		fetchPlaces();
+		if (!isNew) {
+			dispatch(setTripsLoading());
+			fetchTrip(pathname.split('/').pop() as string);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -71,18 +76,14 @@ export const TripItem = () => {
 				locations,
 			};
 
-			isNew
-				? dispatch(createTrip(payload))
-				: dispatch(updateTrip({ id: trip?.id as string, payload }));
+			isNew ? createTrip(payload) : updateTrip(trip?.id as string, payload);
 
-			dispatch(
-				createNotification({
-					title: isNew ? 'New Trip Created!' : `Trip ${title} Updated!`,
-					body: isNew
-						? 'You have created a new trip.'
-						: 'You have updated a trip instance',
-				}),
-			);
+			createNotification({
+				title: isNew ? 'New Trip Created!' : `Trip ${title} Updated!`,
+				body: isNew
+					? 'You have created a new trip.'
+					: 'You have updated a trip instance',
+			});
 			setNotificationListener(Math.random() * 100);
 		}
 	};

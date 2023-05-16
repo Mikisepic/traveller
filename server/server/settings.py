@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -41,6 +42,7 @@ LOCAL_APPS =  [
     'trips.apps.TripsConfig',
     'notifications.apps.NotificationsConfig',
     'users.apps.UsersConfig',
+    'users.user.apps.UserConfig',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
@@ -108,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'users.Traveler'
+AUTH_USER_MODEL = 'users_user.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -130,8 +132,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Third Party Stuff
 
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv('FRONTEND_URLS'),
+]
+
 CORS_ALLOWED_ORIGINS = [
-    os.getenv('FRONTEND_URL'),
+    os.getenv('FRONTEND_URLS'),
 ]
 CORS_ORIGINS_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -140,4 +146,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 5,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }

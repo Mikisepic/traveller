@@ -5,6 +5,9 @@ import { Theme } from '@traveller-ui/components/theme';
 import { NotificationWrapper } from '@traveller-ui/features/notification/components';
 import { AppRoute } from '@traveller-ui/types';
 
+import { selectAccount } from '@traveller-ui/features/auth/store';
+import { authRoutes } from '@traveller-ui/routes';
+import { useAppSelector } from '@traveller-ui/store';
 import { NavbarItem } from './navbar-item';
 
 interface Props {
@@ -13,6 +16,8 @@ interface Props {
 
 export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 	const [collapse, setCollapse] = useState(false);
+
+	const account = useAppSelector(selectAccount);
 
 	const handleCollapse = () => setCollapse(!collapse);
 
@@ -56,6 +61,7 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 						<Theme />
 						<ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							{routeItems}
+							{!account && <NavbarItem route={authRoutes[0]} />}
 						</ul>
 					</div>
 				</div>
@@ -67,6 +73,7 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 						</div>
 						<ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							{routeItems}
+							{!account && <NavbarItem route={authRoutes[0]} />}
 						</ul>
 					</div>
 				)}

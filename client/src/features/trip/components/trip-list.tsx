@@ -7,13 +7,14 @@ import { Button } from '@traveller-ui/components/button';
 import { LoadingSpinner } from '@traveller-ui/components/loading';
 import { Pagination } from '@traveller-ui/components/pagination';
 import {
-	cleanTrips,
-	deleteTrip,
-	fetchTrips,
+	clearTripState,
 	selectTripLoading,
 	selectTrips,
+	setTripsLoading,
 } from '@traveller-ui/features/trip/store';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+
+import { deleteTrip, fetchTrips } from '../services';
 
 export const TripList: React.FC = () => {
 	const dispatch = useAppDispatch();
@@ -25,17 +26,18 @@ export const TripList: React.FC = () => {
 	const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
 
 	useEffect(() => {
-		dispatch(fetchTrips(page));
+		dispatch(setTripsLoading());
+		fetchTrips(page);
 	}, [page]);
 
 	useEffect(() => {
 		return () => {
-			dispatch(cleanTrips());
+			dispatch(clearTripState());
 		};
 	}, []);
 
 	const handleDelete = async (id: string) => {
-		dispatch(deleteTrip(id));
+		deleteTrip(id);
 	};
 
 	const handleRedirect = (pageLocation: number) => setPage(pageLocation);

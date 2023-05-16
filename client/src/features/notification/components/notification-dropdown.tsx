@@ -3,21 +3,18 @@ import React, { useContext } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@traveller-ui/components/button';
-import {
-	deleteNotification,
-	selectNotifications,
-} from '@traveller-ui/features/notification/store';
+import { selectNotifications } from '@traveller-ui/features/notification/store';
 import { NotificationListenerContext } from '@traveller-ui/providers';
-import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+import { useAppSelector } from '@traveller-ui/store';
+import { deleteNotification } from '../services';
 
 export const NotificationDropdown: React.FC = () => {
 	const { setNotificationListener } = useContext(NotificationListenerContext);
 
-	const dispatch = useAppDispatch();
 	const notifications = useAppSelector(selectNotifications);
 
 	const onRemove = (id: string) => {
-		dispatch(deleteNotification(id));
+		deleteNotification(id);
 		setNotificationListener(Math.random() * 100);
 	};
 

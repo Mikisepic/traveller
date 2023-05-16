@@ -1,8 +1,8 @@
 import uuid
 
-from django.contrib.auth.models import User
 from django.db import models
 
+from users.user.models import User
 from places.models import Place
 
 class Trip(models.Model):

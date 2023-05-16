@@ -6,18 +6,21 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 
+import { PersistGate } from 'redux-persist/integration/react';
 import { App } from './App';
-import { store } from './store';
 import { NotificationListenerProvider } from './providers';
+import { persistor, store } from './store';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<BrowserRouter>
-				<NotificationListenerProvider>
-					<App />
-				</NotificationListenerProvider>
-			</BrowserRouter>
+			<PersistGate persistor={persistor} loading={null}>
+				<BrowserRouter>
+					<NotificationListenerProvider>
+						<App />
+					</NotificationListenerProvider>
+				</BrowserRouter>
+			</PersistGate>
 		</Provider>
 	</React.StrictMode>,
 );

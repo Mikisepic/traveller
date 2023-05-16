@@ -1,10 +1,10 @@
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    re_path(r'^api/users/', include('users.urls')),
-    re_path(r'^api/places/', include('places.urls')),
-    re_path(r'^api/trips/', include('trips.urls')),
-    re_path(r'^api/notifications/', include('notifications.urls')),
+    # path('admin/', admin.site.urls),
+    path('api/places/', include('places.urls')),
+    path('api/trips/', include('trips.urls')),
+    path('api/notifications/', include('notifications.urls')),
+    path('api/users/', include('users.urls')),
 ]

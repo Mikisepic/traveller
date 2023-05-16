@@ -11,14 +11,11 @@ import Map, { MapLayerMouseEvent, Marker, Popup } from 'react-map-gl';
 import { Button } from '@traveller-ui/components/button';
 import { LoadingSpinner } from '@traveller-ui/components/loading';
 import {
-	cleanPlaces,
-	deletePlace,
-	fetchPlace,
-	fetchPlaces,
+	clearPlaceState,
 	selectPlace,
 	selectPlaceLoading,
 	selectPlaces,
-	updatePlace,
+	setPlacesLoading,
 } from '@traveller-ui/features/map/store';
 import {
 	Coordinates,
@@ -26,10 +23,11 @@ import {
 	PlacePayload,
 	Viewport,
 } from '@traveller-ui/features/map/types';
-import { createNotification } from '@traveller-ui/features/notification/store';
 import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
+import { createNotification } from '@traveller-ui/features/notification/services';
+import { deletePlace, fetchPlace, fetchPlaces, updatePlace } from '../services';
 import { PopupDialog } from './popup-dialog';
 
 interface Props {
@@ -57,12 +55,13 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 	const [newPlace, setNewPlace] = useState<Coordinates | null>(null);
 
 	useEffect(() => {
-		dispatch(fetchPlaces());
+		dispatch(setPlacesLoading());
+		fetchPlaces();
 	}, []);
 
 	useEffect(() => {
 		return () => {
-			dispatch(cleanPlaces());
+			dispatch(clearPlaceState());
 		};
 	}, []);
 
@@ -72,8 +71,9 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 	};
 
 	const handleMarkerClick = (id: string, lat: number, lng: number) => {
+		dispatch(setPlacesLoading());
 		setCurrentPlaceId(id);
-		dispatch(fetchPlace(id));
+		fetchPlace(id);
 		setViewport({ ...viewport, lat, lng });
 	};
 
@@ -87,15 +87,12 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 	};
 
 	const handleDelete = (id: string, title: string) => {
-		dispatch(deletePlace(id));
-		dispatch(
-			createNotification({
-				title: `Location ${title} Deleted!`,
-				body: 'You have deleted a location.',
-			}),
-		);
-
-		setNotificationListener(Math.random() * 100);
+		deletePlace(id);
+		createNotification({
+			title: `Location ${title} Deleted!`,
+			body: 'You have deleted a location.',
+		}),
+			setNotificationListener(Math.random() * 100);
 	};
 
 	const handleBookmarking = async (p: Place) => {
@@ -108,15 +105,12 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 			isBookmarked: !p.isBookmarked,
 		};
 
-		dispatch(updatePlace({ id: p.id, payload }));
-		dispatch(
-			createNotification({
-				title: `Location ${p.title} Bookmarked!`,
-				body: 'You have bookmarked a location.',
-			}),
-		);
-
-		setNotificationListener(Math.random() * 100);
+		updatePlace(p.id, payload);
+		createNotification({
+			title: `Location ${p.title} Bookmarked!`,
+			body: 'You have bookmarked a location.',
+		}),
+			setNotificationListener(Math.random() * 100);
 	};
 
 	return (

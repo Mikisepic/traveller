@@ -3,11 +3,10 @@ import React, { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '@traveller-ui/components/button';
-import { createPlace } from '@traveller-ui/features/map/store';
 import { Coordinates, Place } from '@traveller-ui/features/map/types';
-import { createNotification } from '@traveller-ui/features/notification/store';
+import { createNotification } from '@traveller-ui/features/notification/services';
 import { NotificationListenerContext } from '@traveller-ui/providers/';
-import { useAppDispatch } from '@traveller-ui/store';
+import { createPlace } from '../services/place.service';
 
 interface Props {
 	newPlace: Coordinates | null;
@@ -16,8 +15,6 @@ interface Props {
 
 export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
 	const { setNotificationListener } = useContext(NotificationListenerContext);
-
-	const dispatch = useAppDispatch();
 
 	const [title, setTitle] = useState<string | null>(null);
 	const [description, setDescription] = useState<string | null>(null);
@@ -46,14 +43,11 @@ export const PopupDialog: React.FC<Props> = ({ newPlace, setNewPlace }) => {
 				priority: parseInt(priority),
 			};
 
-			dispatch(createPlace(payload));
-			dispatch(
-				createNotification({
-					title: 'New Location Created!',
-					body: 'You have created a new instance.',
-				}),
-			);
-
+			createPlace(payload);
+			createNotification({
+				title: 'New Location Created!',
+				body: 'You have created a new instance.',
+			});
 			setNotificationListener(Math.random() * 100);
 			setNewPlace(null);
 		}
