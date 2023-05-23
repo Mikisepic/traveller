@@ -25,6 +25,18 @@ export interface PlaceUpdatePayload extends Base {
 export interface PlaceState {
 	places: Place[];
 	place: Place | null;
+	geometries: GeoJSON.Geometry[] | null;
 	loading: boolean;
 	error: string | null;
+}
+
+export interface DirectionsData {
+	routes: {
+		geometry: GeoJSON.Geometry;
+		legs: {
+			steps: {
+				geometry: GeoJSON.Geometry;
+			}[];
+		}[];
+	}[];
 }

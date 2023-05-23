@@ -1,7 +1,7 @@
 export interface AppRoute {
 	path: string;
 	name: string;
-	element: React.FC;
-	requiredLogin: boolean;
+	element: React.ReactNode;
 	search?: string;
+	children?: AppRoute[];
 }

@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { CheckCircleIcon, ClipboardIcon } from '@heroicons/react/24/outline';
+import { ClipboardIcon } from '@heroicons/react/24/outline';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { Button } from '@traveller-ui/components/button';
+import { Error } from '@traveller-ui/components/error';
 import { fetchPlaces } from '@traveller-ui/features/map/services';
 import {
 	selectPlaces,
@@ -13,6 +16,7 @@ import { Place } from '@traveller-ui/features/map/types';
 import { createNotification } from '@traveller-ui/features/notification/services';
 import { selectTrip, setTripsLoading } from '@traveller-ui/features/trip/store';
 import { TripPayload } from '@traveller-ui/features/trip/types';
+import { Header } from '@traveller-ui/layouts/header';
 import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
@@ -26,12 +30,11 @@ export const TripItem = () => {
 	const places = useAppSelector(selectPlaces);
 
 	const { pathname } = useLocation();
+	const navigate = useNavigate();
 
 	const isNew = pathname.includes('new');
 
-	const [locations, setLocations] = useState<Place[]>([]);
-	const [title, setTitle] = useState<string>('');
-	const [description, setDescription] = useState<string>('');
+	const [locations, setLocations] = useState<string[]>([]);
 
 	useEffect(() => {
 		dispatch(setPlacesLoading());
@@ -44,70 +47,77 @@ export const TripItem = () => {
 
 	useEffect(() => {
 		if (trip) {
-			setTitle(trip.title);
-			setDescription(trip.description);
+			formik.setValues({
+				title: trip.title,
+				description: trip.description,
+				visible: trip.visible,
+			});
 			setLocations(trip.locations);
 		}
 	}, [trip]);
 
-	const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-		setTitle(e.target.value);
+	const formik = useFormik({
+		initialValues: {
+			title: '',
+			description: '',
+			visible: false,
+		},
+		onSubmit: ({ title, description, visible }) => {
+			if (locations && title && description) {
+				const payload: TripPayload = {
+					title,
+					description,
+					locations,
+					visible,
+				};
 
-	const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-		setDescription(e.target.value);
+				isNew ? createTrip(payload) : updateTrip(trip?.id as string, payload);
+
+				createNotification({
+					title: isNew ? 'New Trip Created!' : `Trip ${title} Updated!`,
+					body: isNew
+						? 'You have created a new trip.'
+						: 'You have updated a trip instance',
+				});
+				setNotificationListener(Math.random() * 100);
+				navigate('/trips');
+			}
+		},
+		validationSchema: Yup.object({
+			title: Yup.string().trim().required('Title is required'),
+		}),
+	});
 
 	const handleCheckboxClick = (loc: Place) => {
-		const index = locations.indexOf(loc);
+		const index = locations.indexOf(loc.id);
 
 		if (index !== -1) {
 			setLocations(locations.splice(index, 1));
 		} else {
-			setLocations([...locations, loc]);
-		}
-	};
-
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		if (locations && title && description) {
-			const payload: TripPayload = {
-				title,
-				description,
-				locations,
-			};
-
-			isNew ? createTrip(payload) : updateTrip(trip?.id as string, payload);
-
-			createNotification({
-				title: isNew ? 'New Trip Created!' : `Trip ${title} Updated!`,
-				body: isNew
-					? 'You have created a new trip.'
-					: 'You have updated a trip instance',
-			});
-			setNotificationListener(Math.random() * 100);
+			setLocations([...locations, loc.id]);
 		}
 	};
 
 	const copyTextToClipboard = () => {
-		navigator.clipboard.writeText(window.location.href);
+		navigator.clipboard.writeText(
+			`${(import.meta as any).env.VITE_BACKEND_API}/api/trips/${
+				trip?.shortened_url
+			}`,
+		);
 	};
 
 	return (
 		<>
 			<div className="flex items-center justify-between">
-				<h1 className="text-4xl mb-3 font-bold dark:text-white">
-					{isNew ? 'Create ' : 'View '}
-					Trip
-					<small className="ml-2 text-base font-semibold text-gray-500 dark:text-gray-400">
-						Manage your trip
-					</small>
-				</h1>
-				<Button onClick={copyTextToClipboard}>
-					<ClipboardIcon className="h-6 w-6 text-white" />
-				</Button>
+				<Header title="Trip" description="Manage your trip" />
+				{!isNew && trip?.visible && (
+					<Button onClick={copyTextToClipboard}>
+						<ClipboardIcon className="h-6 w-6 text-white" />
+					</Button>
+				)}
 			</div>
 
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={formik.handleSubmit}>
 				<div className="flex items-baseline gap-10">
 					<div className="flex-1">
 						<div className="mb-6">
@@ -119,11 +129,11 @@ export const TripItem = () => {
 								name="title"
 								className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 								placeholder="title"
-								value={title}
-								autoFocus
-								required
-								onChange={handleTitleChange}
+								value={formik.values.title}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
 							/>
+							{formik.errors.title && <Error message={formik.errors.title} />}
 						</div>
 
 						<div className="mb-6">
@@ -132,10 +142,24 @@ export const TripItem = () => {
 							</label>
 							<textarea
 								name="description"
-								value={description}
-								className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-								onChange={handleDescriptionChange}
+								className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+								value={formik.values.description}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
 							/>
+						</div>
+
+						<div className="flex items-center">
+							<input
+								type="checkbox"
+								className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+								name="visible"
+								checked={formik.values.visible}
+								onChange={formik.handleChange}
+							/>
+							<label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+								Is Visible
+							</label>
 						</div>
 					</div>
 
@@ -148,22 +172,16 @@ export const TripItem = () => {
 								? places.length > 0
 									? places.map((place, index) => (
 											<li key={index}>
-												<div className="flex items-center mb-4">
-													<button
-														type="button"
-														className="flex gap-5"
+												<div className="flex items-center">
+													<input
+														type="checkbox"
+														checked={locations.includes(place.id)}
 														onClick={() => handleCheckboxClick(place)}
-													>
-														<CheckCircleIcon
-															className={[
-																'h-6 w-6 border rounded-full text-white',
-																locations.indexOf(place) > -1
-																	? 'bg-green-500'
-																	: 'bg-red-500',
-															].join(' ')}
-														/>
+														className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+													/>
+													<label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
 														{place.title}
-													</button>
+													</label>
 												</div>
 											</li>
 									  ))
@@ -171,9 +189,7 @@ export const TripItem = () => {
 								: !!trip && trip.locations.length > 0
 								? trip.locations.map((place, index) => (
 										<li key={index}>
-											<div className="flex items-center mb-4">
-												{place.title}
-											</div>
+											<div className="flex items-center mb-4">{place}</div>
 										</li>
 								  ))
 								: 'No locations'}

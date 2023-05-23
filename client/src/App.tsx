@@ -1,29 +1,34 @@
 import React from 'react';
-
 import { Route, Routes } from 'react-router-dom';
 
-import { TripItem } from './features/trip/components';
-import { Footer } from './layouts/footer';
-import { NavbarWrapper } from './layouts/navbar';
-import { PageNotFound } from './pages/page-not-found';
-import { allRoutes, protectedRoutes, publicRoutes } from './routes';
+import { selectAccount } from '@traveller-ui/features/auth/store';
+import { Footer } from '@traveller-ui/layouts/footer';
+import { NavbarWrapper } from '@traveller-ui/layouts/navbar';
+import { allRoutes, protectedRoutes, publicRoutes } from '@traveller-ui/routes';
+import { useAppSelector } from '@traveller-ui/store';
 
 export const App: React.FC = () => {
-	const getRoutes = () =>
-		allRoutes.map((prop, key) => (
-			<Route key={key} path={prop.path} element={<prop.element />} />
-		));
+	const account = useAppSelector(selectAccount);
 
 	return (
 		<div className="container mx-auto ">
-			<NavbarWrapper routes={[...publicRoutes, ...protectedRoutes]} />
+			<NavbarWrapper
+				routes={
+					!!account ? [...publicRoutes, ...protectedRoutes] : publicRoutes
+				}
+				isAuthenticated={!!account}
+			/>
 
 			<div className="mt-24">
 				<Routes>
-					{getRoutes()}
-					<Route path="/trips/new" element={<TripItem />} />
-					<Route path="/trips/:id" element={<TripItem />} />
-					<Route path="*" element={<PageNotFound />} />
+					{allRoutes.map((route, key) => (
+						<Route key={key} path={route.path} element={route.element}>
+							{!!route?.children &&
+								route.children.map((child, key) => (
+									<Route key={key} path={child.path} element={child.element} />
+								))}
+						</Route>
+					))}
 				</Routes>
 			</div>
 

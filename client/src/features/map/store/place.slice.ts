@@ -8,6 +8,7 @@ const SOURCE = 'PLACE API';
 const initialState: PlaceState = {
 	places: [],
 	place: null,
+	geometries: null,
 	loading: false,
 	error: null,
 };
@@ -23,6 +24,11 @@ export const placeSlice = createSlice({
 		},
 		setPlacesLoading: (state) => {
 			state.loading = true;
+			state.error = null;
+		},
+		setGeometries: (state, action: PayloadAction<GeoJSON.Geometry[]>) => {
+			state.geometries = action.payload;
+			state.loading = false;
 			state.error = null;
 		},
 		setPlace: (state, action: PayloadAction<Place | null>) => {
@@ -42,6 +48,7 @@ export const placeSlice = createSlice({
 
 export const selectPlaces = (state: RootState) => state.place.places;
 export const selectPlace = (state: RootState) => state.place.place;
+export const selectGeometries = (state: RootState) => state.place.geometries;
 export const selectPlaceLoading = (state: RootState) => state.place.loading;
 export const selectPlaceError = (state: RootState) => state.place.error;
 
@@ -49,6 +56,7 @@ export const {
 	setPlaces,
 	setPlacesLoading,
 	setPlace,
+	setGeometries,
 	setPlaceError,
 	clearPlaceState,
 } = placeSlice.actions;

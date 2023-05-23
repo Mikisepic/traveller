@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@traveller-ui/components/button';
 import { LoadingSpinner } from '@traveller-ui/components/loading';
@@ -12,18 +12,19 @@ import {
 	selectTrips,
 	setTripsLoading,
 } from '@traveller-ui/features/trip/store';
+import { Header } from '@traveller-ui/layouts/header';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
 import { deleteTrip, fetchTrips } from '../services';
 
 export const TripList: React.FC = () => {
-	const dispatch = useAppDispatch();
-	const trips = useAppSelector(selectTrips);
-	const loading = useAppSelector(selectTripLoading);
-
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
+
+	const dispatch = useAppDispatch();
+	const trips = useAppSelector(selectTrips);
+	const loading = useAppSelector(selectTripLoading);
 
 	useEffect(() => {
 		dispatch(setTripsLoading());
@@ -45,6 +46,18 @@ export const TripList: React.FC = () => {
 	return (
 		<>
 			{loading && <LoadingSpinner />}
+			<div className="flex items-center justify-between">
+				<Header
+					title="Trips"
+					description="Plan and review your upcoming trips"
+				/>
+				<Link
+					to="new"
+					className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+				>
+					<PlusIcon className="h-6 w-6 text-white" />
+				</Link>
+			</div>
 
 			<div className={loading ? 'opacity-20' : ''}>
 				{!!trips && trips.results.length !== 0 ? (

@@ -17,14 +17,13 @@ import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppSelector } from '@traveller-ui/store';
 
 export const BookmarkList: React.FC = () => {
-	const { setNotificationListener } = useContext(NotificationListenerContext);
-
-	const bookmarks = useAppSelector(selectBookmarks);
-	const loading = useAppSelector(selectBookmarkLoading);
-
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
+
+	const { setNotificationListener } = useContext(NotificationListenerContext);
+	const bookmarks = useAppSelector(selectBookmarks);
+	const loading = useAppSelector(selectBookmarkLoading);
 
 	const handleRedirect = (pageLocation: number) => setPage(pageLocation);
 

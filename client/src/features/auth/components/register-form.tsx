@@ -1,12 +1,13 @@
-import { useFormik } from 'formik';
 import React from 'react';
-import * as Yup from 'yup';
 
+import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@traveller-ui/components/button';
 import { useAppSelector } from '@traveller-ui/store';
+import * as Yup from 'yup';
 
+import { Error } from '@traveller-ui/components/error';
 import { performRegister } from '../services';
 import { selectAuthError } from '../store';
 
@@ -41,7 +42,7 @@ export const RegisterForm: React.FC = () => {
 			<div className="space-y-4">
 				<div className="mb-6">
 					<input
-						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
 						type="email"
 						placeholder="Email"
 						name="email"
@@ -49,12 +50,12 @@ export const RegisterForm: React.FC = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>
-					{formik.errors.email ? <div>{formik.errors.email} </div> : null}
+					{formik.errors.email && <Error message={formik.errors.email} />}
 				</div>
 
 				<div className="mb-6">
 					<input
-						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
 						type="text"
 						placeholder="Username"
 						name="username"
@@ -62,12 +63,12 @@ export const RegisterForm: React.FC = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>
-					{formik.errors.username ? <div>{formik.errors.username} </div> : null}
+					{formik.errors.username && <Error message={formik.errors.username} />}
 				</div>
 
 				<div className="mb-6">
 					<input
-						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
 						type="password"
 						placeholder="Password"
 						name="password"
@@ -75,12 +76,12 @@ export const RegisterForm: React.FC = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>
-					{formik.errors.password ? <div>{formik.errors.password} </div> : null}
+					{formik.errors.password && <Error message={formik.errors.password} />}
 				</div>
 
 				<div className="mb-6">
 					<input
-						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
 						type="password"
 						placeholder="Confirm Password"
 						name="confirmPassword"
@@ -89,10 +90,9 @@ export const RegisterForm: React.FC = () => {
 						onBlur={formik.handleBlur}
 					/>
 					<div>
-						{formik.errors.confirmPassword &&
-							formik.touched.confirmPassword && (
-								<div>{formik.errors.confirmPassword}</div>
-							)}{' '}
+						{formik.errors.confirmPassword && (
+							<Error message={formik.errors.confirmPassword} />
+						)}
 					</div>
 				</div>
 			</div>

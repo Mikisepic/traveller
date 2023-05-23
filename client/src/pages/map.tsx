@@ -7,7 +7,7 @@ export const Map: React.FC = () => {
 	return (
 		<>
 			<Header title="Map" description="Navigate and find destinations" />
-			<MapWrapper style="light-v11" />
+			<MapWrapper />
 		</>
 	);
 };

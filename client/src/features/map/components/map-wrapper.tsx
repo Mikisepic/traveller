@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import {
 	BookmarkIcon,
@@ -6,12 +6,23 @@ import {
 	StarIcon,
 	TrashIcon,
 } from '@heroicons/react/24/outline';
-import Map, { MapLayerMouseEvent, Marker, Popup } from 'react-map-gl';
+import Map, {
+	GeolocateControl,
+	MapLayerMouseEvent,
+	Marker,
+	NavigationControl,
+	Popup,
+} from 'react-map-gl';
 
 import { Button } from '@traveller-ui/components/button';
 import { LoadingSpinner } from '@traveller-ui/components/loading';
 import {
+	selectAccount,
+	selectUserSettings,
+} from '@traveller-ui/features/auth/store';
+import {
 	clearPlaceState,
+	selectGeometries,
 	selectPlace,
 	selectPlaceLoading,
 	selectPlaces,
@@ -23,24 +34,30 @@ import {
 	PlacePayload,
 	Viewport,
 } from '@traveller-ui/features/map/types';
+import { createNotification } from '@traveller-ui/features/notification/services';
 import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
 
-import { createNotification } from '@traveller-ui/features/notification/services';
-import { deletePlace, fetchPlace, fetchPlaces, updatePlace } from '../services';
+import {
+	deletePlace,
+	fetchGeometries,
+	fetchPlace,
+	fetchPlaces,
+	updatePlace,
+} from '../services';
 import { PopupDialog } from './popup-dialog';
 
-interface Props {
-	style: string;
-}
-
-export const MapWrapper: React.FC<Props> = ({ style }) => {
+export const MapWrapper: React.FC = () => {
 	const { setNotificationListener } = useContext(NotificationListenerContext);
 
 	const dispatch = useAppDispatch();
+
 	const places = useAppSelector(selectPlaces);
 	const place = useAppSelector(selectPlace);
+	const geometries = useAppSelector(selectGeometries);
 	const loading = useAppSelector(selectPlaceLoading);
+	const account = useAppSelector(selectAccount);
+	const userSettings = useAppSelector(selectUserSettings);
 
 	// Map
 	const [viewport, setViewport] = useState<Viewport>({
@@ -49,14 +66,36 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		zoom: 5,
 	});
 	const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
-	const [selectedStyle, setSelectedStyle] = useState<string>(style);
 
 	// Markers
 	const [newPlace, setNewPlace] = useState<Coordinates | null>(null);
 
+	const markers = useMemo(
+		() =>
+			places.map((p) => (
+				<div key={p.id}>
+					<Marker
+						latitude={p.lat}
+						longitude={p.lng}
+						onClick={() => handleMarkerClick(p.id, p.lat, p.lng)}
+					></Marker>
+				</div>
+			)),
+		[places],
+	);
+
 	useEffect(() => {
+		if (!!account) {
+			dispatch(setPlacesLoading());
+			fetchPlaces();
+		}
+
 		dispatch(setPlacesLoading());
-		fetchPlaces();
+		// TODO make dynamic
+		fetchGeometries(
+			{ lat: 24.118706, lng: 55.319177 },
+			{ lat: 14.221413, lng: 48.190892 },
+		);
 	}, []);
 
 	useEffect(() => {
@@ -65,16 +104,12 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 		};
 	}, []);
 
-	const handleStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const newStyle = e.target.value;
-		setSelectedStyle(newStyle);
-	};
-
 	const handleMarkerClick = (id: string, lat: number, lng: number) => {
-		dispatch(setPlacesLoading());
 		setCurrentPlaceId(id);
-		fetchPlace(id);
 		setViewport({ ...viewport, lat, lng });
+
+		dispatch(setPlacesLoading());
+		fetchPlace(id);
 	};
 
 	const handleAddClick = ({ lngLat }: MapLayerMouseEvent) => {
@@ -88,11 +123,15 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 
 	const handleDelete = (id: string, title: string) => {
 		deletePlace(id);
+
 		createNotification({
 			title: `Location ${title} Deleted!`,
 			body: 'You have deleted a location.',
-		}),
-			setNotificationListener(Math.random() * 100);
+		});
+		setNotificationListener(Math.random() * 100);
+
+		dispatch(setPlacesLoading());
+		fetchPlaces();
 	};
 
 	const handleBookmarking = async (p: Place) => {
@@ -107,10 +146,14 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 
 		updatePlace(p.id, payload);
 		createNotification({
-			title: `Location ${p.title} Bookmarked!`,
-			body: 'You have bookmarked a location.',
-		}),
-			setNotificationListener(Math.random() * 100);
+			title: `Location ${p.title} ${
+				!p.isBookmarked ? 'Bookmarked' : 'Unbookmarked'
+			}!`,
+			body: `You have ${
+				!p.isBookmarked ? 'bookmarked' : 'unbookmarked'
+			}  a location.`,
+		});
+		setNotificationListener(Math.random() * 100);
 	};
 
 	return (
@@ -118,24 +161,6 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 			{loading && <LoadingSpinner />}
 
 			<div className={loading ? 'opacity-20' : ''}>
-				<div className="mb-5">
-					<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-						Map mode
-					</label>
-					<select
-						className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-						value={selectedStyle}
-						onChange={handleStyleChange}
-					>
-						<option value="">--Please choose an option--</option>
-						<option value="satellite-streets-v12">Satellite Streets</option>
-						<option value="light-v11">Light</option>
-						<option value="dark-v11">Dark</option>
-						<option value="streets-v12">Streets</option>
-						<option value="outdoors-v12">Outdoors</option>
-					</select>
-				</div>
-
 				<Map
 					mapboxAccessToken={(import.meta as any).env.VITE_MAPBOX_ACCESS_TOKEN}
 					initialViewState={{
@@ -145,18 +170,13 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 					}}
 					doubleClickZoom={false}
 					style={{ width: '100wv', height: '80vh' }}
-					mapStyle={`mapbox://styles/mapbox/${selectedStyle}`}
+					mapStyle={`mapbox://styles/mapbox/${userSettings.mapStyle}`}
 					onDblClick={handleAddClick}
 				>
-					{places.map((p) => (
-						<div key={p.id}>
-							<Marker
-								latitude={p.lat}
-								longitude={p.lng}
-								onClick={() => handleMarkerClick(p.id, p.lat, p.lng)}
-							></Marker>
-						</div>
-					))}
+					<GeolocateControl />
+					<NavigationControl />
+
+					{markers}
 
 					{place && place.id === currentPlaceId && (
 						<Popup
@@ -221,6 +241,19 @@ export const MapWrapper: React.FC<Props> = ({ style }) => {
 							</Popup>
 						</>
 					)}
+
+					{/* {geometries &&
+						geometries.map((geometry, index) => (
+							<Source key={index} type="geojson" data={geometry}>
+								<Layer
+									type="line"
+									paint={{
+										'line-color': '#0074D9',
+										'line-width': 2,
+									}}
+								/>
+							</Source>
+						))} */}
 				</Map>
 			</div>
 		</>

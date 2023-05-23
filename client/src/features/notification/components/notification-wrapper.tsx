@@ -2,24 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { BellAlertIcon } from '@heroicons/react/24/outline';
 
-import { LoadingSpinner } from '@traveller-ui/components/loading';
-import {
-	selectNotificationLoading,
-	setNotificationsLoading,
-} from '@traveller-ui/features/notification/store';
+import { setNotificationsLoading } from '@traveller-ui/features/notification/store';
 import { NotificationListenerContext } from '@traveller-ui/providers/notification-listener';
-import { useAppDispatch, useAppSelector } from '@traveller-ui/store';
+import { useAppDispatch } from '@traveller-ui/store';
 
 import { fetchNotifications } from '../services';
 import { NotificationCount } from './notification-count';
 import { NotificationDropdown } from './notification-dropdown';
 
 export const NotificationWrapper: React.FC = () => {
-	const { notificationListener } = useContext(NotificationListenerContext);
-
 	const dispatch = useAppDispatch();
-	const loading = useAppSelector(selectNotificationLoading);
 
+	const { notificationListener } = useContext(NotificationListenerContext);
 	const [show, setShow] = useState(false);
 
 	const onBellClick = () => setShow(!show);
@@ -39,7 +33,6 @@ export const NotificationWrapper: React.FC = () => {
 			{show && (
 				<div className="relative">
 					<div className="absolute top-[30px] right-[-30px] z-10 max-h-[200px] w-[300px] overflow-auto bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
-						{loading && <LoadingSpinner />}
 						<NotificationDropdown />
 					</div>
 				</div>

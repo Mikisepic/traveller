@@ -1,5 +1,10 @@
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseForbidden
+
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 
 from trips.models import Trip
 from trips.permissions import IsOwnerOrReadOnly
@@ -16,3 +21,13 @@ class TripViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly])
+def redirect_to_trip(request, shortened_url):
+    instance = get_object_or_404(Trip, shortened_url=shortened_url)
+    if instance.visible:
+      serializer = TripSerializer(instance)
+      serialized_data = serializer.data
+      return Response(serialized_data)
+    return HttpResponseForbidden('Trip is private')

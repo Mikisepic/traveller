@@ -10,4 +10,4 @@ class TripSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ['id', 'user', 'title', 'description', 'created_at', 'updated_at', 'locations']
+        fields = ['id', 'user', 'locations', 'title', 'shortened_url', 'visible', 'description', 'created_at', 'updated_at']

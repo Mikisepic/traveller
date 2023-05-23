@@ -1,10 +1,11 @@
-import { useFormik } from 'formik';
 import React from 'react';
+
+import { useFormik } from 'formik';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { Link, useNavigate } from 'react-router-dom';
-
 import { Button } from '@traveller-ui/components/button';
+import { Error } from '@traveller-ui/components/error';
 import { useAppSelector } from '@traveller-ui/store';
 
 import { performLogin } from '../services';
@@ -44,7 +45,7 @@ export const LoginForm: React.FC = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>
-					{formik.errors.email ? <div>{formik.errors.email} </div> : null}
+					{formik.errors.email && <Error message={formik.errors.email} />}
 				</div>
 
 				<div className="mb-6">
@@ -58,12 +59,15 @@ export const LoginForm: React.FC = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>
-					{formik.errors.password ? <div>{formik.errors.password} </div> : null}
+					{formik.errors.password && <Error message={formik.errors.password} />}
 				</div>
 			</div>
 
 			<div className="text-info text-center my-2" hidden={false}>
-				Don't have an account yet? <Link to="/register">Sign Up</Link>
+				Don't have an account yet?{' '}
+				<Link to="/register">
+					<span className="text-blue-600 dark:text-blue-500">Sign Up</span>
+				</Link>
 			</div>
 
 			<div className="flex justify-center items-center mt-6">

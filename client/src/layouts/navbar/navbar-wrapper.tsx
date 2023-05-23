@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
+import { Cog6ToothIcon } from '@heroicons/react/24/outline';
+
+import { Button } from '@traveller-ui/components/button';
 import { Install } from '@traveller-ui/components/install-pwa';
-import { Theme } from '@traveller-ui/components/theme';
 import { NotificationWrapper } from '@traveller-ui/features/notification/components';
+import { authRoutes } from '@traveller-ui/routes';
 import { AppRoute } from '@traveller-ui/types';
 
-import { selectAccount } from '@traveller-ui/features/auth/store';
-import { authRoutes } from '@traveller-ui/routes';
-import { useAppSelector } from '@traveller-ui/store';
 import { NavbarItem } from './navbar-item';
 
 interface Props {
 	routes: AppRoute[];
+	isAuthenticated: boolean;
 }
 
-export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
+export const NavbarWrapper: React.FC<Props> = ({ routes, isAuthenticated }) => {
 	const [collapse, setCollapse] = useState(false);
-
-	const account = useAppSelector(selectAccount);
 
 	const handleCollapse = () => setCollapse(!collapse);
 
@@ -28,13 +28,20 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 	return (
 		<nav className="bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
 			<div className="container flex flex-wrap items-center justify-between mx-auto">
-				<a href="/" className="flex items-center">
+				<Link to="/" className="flex items-center">
 					<span className="self-center text-5xl font-bold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
 						Traveller
 					</span>
-				</a>
+				</Link>
+
 				<div className="flex items-center justify-between">
-					<NotificationWrapper />
+					<Install />
+					<Link to="/settings">
+						<Button>
+							<Cog6ToothIcon className="w-6 h-6 text-white" />
+						</Button>
+					</Link>
+					{isAuthenticated && <NotificationWrapper />}
 
 					<button
 						type="button"
@@ -57,23 +64,17 @@ export const NavbarWrapper: React.FC<Props> = ({ routes }) => {
 					</button>
 
 					<div className="hidden w-full ml-3 md:flex items-center justify-between md:w-auto">
-						<Install />
-						<Theme />
 						<ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							{routeItems}
-							{!account && <NavbarItem route={authRoutes[0]} />}
+							{!isAuthenticated && <NavbarItem route={authRoutes[0]} />}
 						</ul>
 					</div>
 				</div>
 				{collapse && (
 					<div className="block w-full md:hidden">
-						<div className="flex place-content-end">
-							<Install />
-							<Theme />
-						</div>
 						<ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							{routeItems}
-							{!account && <NavbarItem route={authRoutes[0]} />}
+							{!isAuthenticated && <NavbarItem route={authRoutes[0]} />}
 						</ul>
 					</div>
 				)}

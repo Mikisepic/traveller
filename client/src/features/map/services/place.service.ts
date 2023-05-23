@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 import {
 	apiDelete,
@@ -8,8 +8,8 @@ import {
 } from '@traveller-ui/services/api';
 import { store } from '@traveller-ui/store';
 
-import { setPlace, setPlaceError, setPlaces } from '../store';
-import { Place, PlacePayload } from '../types';
+import { setGeometries, setPlace, setPlaceError, setPlaces } from '../store';
+import { Coordinates, DirectionsData, Place, PlacePayload } from '../types';
 
 export const fetchPlaces = async () => {
 	try {
@@ -24,6 +24,47 @@ export const fetchPlace = async (id: string) => {
 	try {
 		const response = await apiGet<Place>(`/api/places/${id}/`);
 		store.dispatch(setPlace(response || null));
+	} catch (error) {
+		store.dispatch(setPlaceError((error as AxiosError).message));
+	}
+};
+
+export const fetchGeometries = async (start: Coordinates, end: Coordinates) => {
+	try {
+		const response: AxiosResponse<DirectionsData> = await axios.get(
+			`https://api.mapbox.com/directions/v5/mapbox/driving/${start.lat},${
+				start.lng
+			};${end.lat},${
+				end.lng
+			}?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=${
+				(import.meta as any).env.VITE_MAPBOX_ACCESS_TOKEN
+			}`,
+		);
+		const data = response.data;
+
+		// Choose the first option
+		const geometries = data.routes[0].legs[0].steps.map(
+			(step) => step.geometry,
+		);
+
+		store.dispatch(setGeometries(geometries));
+	} catch (error) {
+		store.dispatch(setPlaceError((error as AxiosError).message));
+	}
+};
+
+// TODO: Optimization API
+export const fetchOptimization = async (
+	profile: string,
+	coordinates: Coordinates[],
+) => {
+	try {
+		const response: AxiosResponse<DirectionsData> = await axios.get(
+			`https://api.mapbox.com/optimized-trips/v1/${profile}/${coordinates}?access_token=${
+				(import.meta as any).env.VITE_MAPBOX_ACCESS_TOKEN
+			}`,
+		);
+		const data = response.data;
 	} catch (error) {
 		store.dispatch(setPlaceError((error as AxiosError).message));
 	}

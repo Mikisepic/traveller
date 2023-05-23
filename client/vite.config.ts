@@ -20,22 +20,6 @@ export default defineConfig({
 			devOptions: {
 				enabled: true,
 			},
-			workbox: {
-				runtimeCaching: [
-					{
-						urlPattern: ({ url }) => {
-							return url.pathname.startsWith('/api');
-						},
-						handler: 'CacheFirst' as const,
-						options: {
-							cacheName: 'api-cache',
-							cacheableResponse: {
-								statuses: [0, 204],
-							},
-						},
-					},
-				],
-			},
 			manifest: {
 				name: 'Traveller',
 				short_name: 'Traveller',
