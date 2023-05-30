@@ -38,7 +38,11 @@ export const TripList: React.FC = () => {
 	}, []);
 
 	const handleDelete = async (id: string) => {
-		deleteTrip(id);
+		const confirmation = confirm(`Delete this trip?`);
+
+		if (confirmation) {
+			deleteTrip(id);
+		}
 	};
 
 	const handleRedirect = (pageLocation: number) => setPage(pageLocation);

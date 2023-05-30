@@ -122,16 +122,20 @@ export const MapWrapper: React.FC = () => {
 	};
 
 	const handleDelete = (id: string, title: string) => {
-		deletePlace(id);
+		const confirmation = confirm(`Delete map marker ${title}?`);
 
-		createNotification({
-			title: `Location ${title} Deleted!`,
-			body: 'You have deleted a location.',
-		});
-		setNotificationListener(Math.random() * 100);
+		if (confirmation) {
+			deletePlace(id);
 
-		dispatch(setPlacesLoading());
-		fetchPlaces();
+			createNotification({
+				title: `Location ${title} Deleted!`,
+				body: 'You have deleted a location.',
+			});
+			setNotificationListener(Math.random() * 100);
+
+			dispatch(setPlacesLoading());
+			fetchPlaces();
+		}
 	};
 
 	const handleBookmarking = async (p: Place) => {

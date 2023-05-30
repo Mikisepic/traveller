@@ -65,6 +65,7 @@ export const fetchOptimization = async (
 			}`,
 		);
 		const data = response.data;
+		console.log(data);
 	} catch (error) {
 		store.dispatch(setPlaceError((error as AxiosError).message));
 	}
