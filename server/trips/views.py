@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
+from places.models import Place
 from trips.models import Trip
 from trips.permissions import IsOwnerOrReadOnly
 from trips.serializers import TripSerializer
@@ -21,6 +22,13 @@ class TripViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        
+        locations_data = self.request.data.pop('locations', [])
+        instance = serializer.save()
+
+        for location_data in locations_data:
+            location = Place.objects.get(id=location_data['id'])
+            instance.locations.add(location)
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly])

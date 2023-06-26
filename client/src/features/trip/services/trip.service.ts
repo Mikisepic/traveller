@@ -34,6 +34,7 @@ export const fetchTrip = async (id: string) => {
 
 export const createTrip = async (payload: TripPayload) => {
 	try {
+		console.log(payload);
 		const response = await apiPost<Trip>(`/api/trips/`, payload);
 		store.dispatch(setTrip(response || null));
 	} catch (error) {

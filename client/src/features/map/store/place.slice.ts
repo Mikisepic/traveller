@@ -1,6 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { Place, PlaceState } from '@traveller-ui/features/map/types';
+import {
+	MapboxOptimizationTrip,
+	MapboxOptimizationWaypoint,
+	MapboxRoute,
+	MapboxWaypoint,
+	Place,
+	PlaceState,
+} from '@traveller-ui/features/map/types';
 import { RootState } from '@traveller-ui/store';
 
 const SOURCE = 'PLACE API';
@@ -8,7 +15,9 @@ const SOURCE = 'PLACE API';
 const initialState: PlaceState = {
 	places: [],
 	place: null,
-	geometries: null,
+	waypoints: null,
+	optimizations: null,
+	routes: null,
 	loading: false,
 	error: null,
 };
@@ -26,8 +35,24 @@ export const placeSlice = createSlice({
 			state.loading = true;
 			state.error = null;
 		},
-		setGeometries: (state, action: PayloadAction<GeoJSON.Geometry[]>) => {
-			state.geometries = action.payload;
+		setOptimizations: (
+			state,
+			action: PayloadAction<MapboxOptimizationTrip[]>,
+		) => {
+			state.optimizations = action.payload;
+			state.loading = false;
+			state.error = null;
+		},
+		setWaypoints: (
+			state,
+			action: PayloadAction<MapboxOptimizationWaypoint[] | MapboxWaypoint[]>,
+		) => {
+			state.waypoints = action.payload;
+			state.loading = false;
+			state.error = null;
+		},
+		setRoutes: (state, action: PayloadAction<MapboxRoute[]>) => {
+			state.routes = action.payload;
 			state.loading = false;
 			state.error = null;
 		},
@@ -48,7 +73,10 @@ export const placeSlice = createSlice({
 
 export const selectPlaces = (state: RootState) => state.place.places;
 export const selectPlace = (state: RootState) => state.place.place;
-export const selectGeometries = (state: RootState) => state.place.geometries;
+export const selectOptimizations = (state: RootState) =>
+	state.place.optimizations;
+export const selectWaypoints = (state: RootState) => state.place.waypoints;
+export const selectRoutes = (state: RootState) => state.place.routes;
 export const selectPlaceLoading = (state: RootState) => state.place.loading;
 export const selectPlaceError = (state: RootState) => state.place.error;
 
@@ -56,7 +84,9 @@ export const {
 	setPlaces,
 	setPlacesLoading,
 	setPlace,
-	setGeometries,
+	setOptimizations,
+	setWaypoints,
+	setRoutes,
 	setPlaceError,
 	clearPlaceState,
 } = placeSlice.actions;

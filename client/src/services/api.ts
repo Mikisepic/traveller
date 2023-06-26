@@ -22,23 +22,15 @@ axiosService.interceptors.request.use(async (config) => {
 
 	if (token !== null) {
 		config.headers.Authorization = 'Bearer ' + token;
-		// console.debug('[Request]', config, JSON.stringify(token));
 	}
 	return config;
 });
 
 axiosService.interceptors.response.use(
 	(res) => {
-		// console.debug('[Response]', res.config, res.status, res.data);
 		return Promise.resolve(res);
 	},
 	(err) => {
-		// console.debug(
-		// 	'[Response]',
-		// 	err.config.baseURL + err.config.url,
-		// 	err.response.status,
-		// 	err.response.data,
-		// );
 		return Promise.reject(err);
 	},
 );

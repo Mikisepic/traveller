@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from places.models import Place
+from places.serializers import PlaceSerializer
 from trips.models import Trip
 
 class TripSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    locations = serializers.PrimaryKeyRelatedField(queryset=Place.objects.all(), many=True)
+    locations = PlaceSerializer(many=True, read_only=True)
     # locations = serializers.HyperlinkedRelatedField(many=True, view_name='place-detail', read_only=True)
 
     class Meta:

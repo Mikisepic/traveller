@@ -34,7 +34,7 @@ export const TripItem = () => {
 
 	const isNew = pathname.includes('new');
 
-	const [locations, setLocations] = useState<string[]>([]);
+	const [locations, setLocations] = useState<Place[]>([]);
 
 	useEffect(() => {
 		dispatch(setPlacesLoading());
@@ -89,12 +89,12 @@ export const TripItem = () => {
 	});
 
 	const handleCheckboxClick = (loc: Place) => {
-		const index = locations.indexOf(loc.id);
+		const index = locations.findIndex(({ id }) => id === loc.id);
 
 		if (index !== -1) {
 			setLocations(locations.splice(index, 1));
 		} else {
-			setLocations([...locations, loc.id]);
+			setLocations([...locations, loc]);
 		}
 	};
 
@@ -175,7 +175,11 @@ export const TripItem = () => {
 												<div className="flex items-center">
 													<input
 														type="checkbox"
-														checked={locations.includes(place.id)}
+														checked={
+															locations.findIndex(
+																({ id }) => id === place.id,
+															) !== -1
+														}
 														onClick={() => handleCheckboxClick(place)}
 														className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
 													/>
@@ -189,7 +193,9 @@ export const TripItem = () => {
 								: !!trip && trip.locations.length > 0
 								? trip.locations.map((place, index) => (
 										<li key={index}>
-											<div className="flex items-center mb-4">{place}</div>
+											<div className="flex items-center mb-4">
+												{place.title}
+											</div>
 										</li>
 								  ))
 								: 'No locations'}
