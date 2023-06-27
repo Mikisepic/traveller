@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { TrashIcon } from '@heroicons/react/24/outline';
@@ -9,12 +9,14 @@ import { Pagination } from '@traveller-ui/components/pagination';
 import {
 	selectBookmarkLoading,
 	selectBookmarks,
+	setBookmarkLoading,
 } from '@traveller-ui/features/bookmark/store';
 import { updatePlace } from '@traveller-ui/features/map/services';
 import { Place, PlacePayload } from '@traveller-ui/features/map/types';
 import { createNotification } from '@traveller-ui/features/notification/services';
 import { NotificationListenerContext } from '@traveller-ui/providers';
 import { useAppSelector } from '@traveller-ui/store';
+import { fetchBookmarks } from '../services';
 
 export const BookmarkList: React.FC = () => {
 	const location = useLocation();
@@ -46,6 +48,11 @@ export const BookmarkList: React.FC = () => {
 
 		setNotificationListener(Math.random() * 100);
 	};
+
+	useEffect(() => {
+		setBookmarkLoading();
+		fetchBookmarks(1);
+	}, []);
 
 	return (
 		<>
