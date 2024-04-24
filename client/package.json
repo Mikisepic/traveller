@@ -25,6 +25,13 @@
     "yup": "^1.1.1"
   },
   "devDependencies": {
+    "@nrwl/cypress": "15.9.7",
+    "@nrwl/eslint-plugin-nx": "15.9.7",
+    "@nrwl/js": "15.9.7",
+    "@nrwl/linter": "15.9.7",
+    "@nrwl/react": "15.9.7",
+    "@nrwl/vite": "15.9.7",
+    "@nrwl/workspace": "15.9.7",
     "@types/mapbox-gl": "^2.7.10",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
