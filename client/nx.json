@@ -3,26 +3,31 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build"
-        ]
+        "cacheableOperations": ["build"]
       }
     }
   },
-  "@nrwl/react": {
-    "application": {
-      "style": "scss",
-      "linter": "eslint",
-      "bundler": "vite",
-      "babel": true
-    },
-    "component": {
-      "style": "scss"
-    },
-    "library": {
-      "style": "scss",
-      "linter": "eslint"
+  "defaultBase": "master",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "bundler": "vite",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
     }
   },
-  "defaultBase": "master"
+  "targetDefaults": {
+    "test": {
+      "inputs": ["default", "^default"]
+    }
+  }
 }
