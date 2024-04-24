@@ -9,5 +9,20 @@
       }
     }
   },
+  "@nrwl/react": {
+    "application": {
+      "style": "scss",
+      "linter": "eslint",
+      "bundler": "vite",
+      "babel": true
+    },
+    "component": {
+      "style": "scss"
+    },
+    "library": {
+      "style": "scss",
+      "linter": "eslint"
+    }
+  },
   "defaultBase": "master"
 }
