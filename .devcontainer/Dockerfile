@@ -1,7 +1,7 @@
 FROM node:18.20-alpine AS dev
 
 RUN apk update
-RUN apk add bash git sudo
+RUN apk add bash git sudo openssh
 RUN sudo npm i -g nx
 
 RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
