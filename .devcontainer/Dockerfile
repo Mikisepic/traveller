@@ -1,4 +1,4 @@
-FROM node:16.20-alpine AS dev
+FROM node:18.20-alpine AS dev
 
 RUN apk update
 RUN apk add bash git sudo

@@ -14,7 +14,7 @@ services:
       - 4211:4211
     volumes:
       - ..:/workspace
-      - node-modules:/workspace/node_modules
+      - node-modules:/workspace/client/node_modules
       - bash-history:/commandhistory
       - ~/.ssh:/root/.ssh-localhost:ro
       - vs-extensions:/root/.vscode-server/extensions
@@ -29,11 +29,9 @@ services:
       - 4200:4200
     volumes:
       - ..:/workspace
-      - node-modules:/workspace/node_modules
-      - angular-cache:/workspace/.angular
+      - node-modules:/workspace/client/node_modules
 
 volumes:
   node-modules:
-  angular-cache:
   bash-history:
   vs-extensions:

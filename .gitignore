@@ -1,5 +1,6 @@
 # NODE
 node_modules/
+.nx/
 .expo/
 dist/
 npm-debug.*

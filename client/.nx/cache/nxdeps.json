@@ -118,18 +118,6 @@
         "tags": [],
         "files": [
           {
-            "file": ".devcontainer/devcontainer.json",
-            "hash": "3535166902491394186"
-          },
-          {
-            "file": ".devcontainer/docker-compose.yml",
-            "hash": "4249635585914078669"
-          },
-          {
-            "file": ".devcontainer/Dockerfile",
-            "hash": "9867853662483822169"
-          },
-          {
             "file": ".env.example",
             "hash": "63053509532782450"
           },
@@ -144,14 +132,6 @@
           {
             "file": ".gitignore",
             "hash": "5349087498021317679"
-          },
-          {
-            "file": ".nx/cache/lockfile.hash",
-            "hash": "1482621466223363832"
-          },
-          {
-            "file": ".nx/cache/nxdeps.json",
-            "hash": "14761183051332320413"
           },
           {
             "file": ".prettierignore",
