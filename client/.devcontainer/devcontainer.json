@@ -1,0 +1,6 @@
+{
+	"name": "traveller",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "traveller_dev",
+	"workspaceFolder": "/workspace"
+}

@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  traveller_dev:
+    container_name: traveller_dev
+    build:
+      context: .
+      target: dev
+    working_dir: /workspace
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    ports:
+      - 4211:4211
+    volumes:
+      - ..:/workspace
+      - node-modules:/workspace/node_modules
+      - bash-history:/commandhistory
+      - ~/.ssh:/root/.ssh-localhost:ro
+      - vs-extensions:/root/.vscode-server/extensions
+
+  traveller_server:
+    container_name: traveller_server
+    build:
+      context: .
+      target: server
+    working_dir: /workspace
+    ports:
+      - 4200:4200
+    volumes:
+      - ..:/workspace
+      - node-modules:/workspace/node_modules
+      - angular-cache:/workspace/.angular
+
+volumes:
+  node-modules:
+  angular-cache:
+  bash-history:
+  vs-extensions:
