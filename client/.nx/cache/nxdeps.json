@@ -1,0 +1,2875 @@
+{
+  "version": "5.1",
+  "nxVersion": "15.9.7",
+  "deps": {
+    "@heroicons/react": "^2.0.16",
+    "@reduxjs/toolkit": "^1.9.3",
+    "axios": "^1.3.5",
+    "axios-auth-refresh": "^3.3.6",
+    "dotenv": "^16.0.3",
+    "formik": "^2.2.9",
+    "mapbox-gl": "^2.14.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.0.21",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.9.0",
+    "redux-persist": "^6.0.0",
+    "tslib": "^2.3.0",
+    "uuid": "^9.0.0",
+    "yup": "^1.1.1",
+    "@babel/preset-react": "^7.14.5",
+    "@nrwl/cypress": "15.9.7",
+    "@nrwl/eslint-plugin-nx": "15.9.7",
+    "@nrwl/jest": "15.9.7",
+    "@nrwl/js": "15.9.7",
+    "@nrwl/linter": "15.9.7",
+    "@nrwl/react": "15.9.7",
+    "@nrwl/vite": "15.9.7",
+    "@nrwl/webpack": "15.9.7",
+    "@nrwl/workspace": "15.9.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@svgr/webpack": "^6.1.2",
+    "@swc/core": "^1.2.173",
+    "@testing-library/react": "14.0.0",
+    "@types/jest": "^29.4.0",
+    "@types/mapbox-gl": "^2.7.10",
+    "@types/node": "18.14.2",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "@types/react-router-dom": "5.3.3",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "@vitejs/plugin-react": "^3.0.0",
+    "@vitest/coverage-c8": "~0.25.8",
+    "@vitest/ui": "^0.25.8",
+    "autoprefixer": "^10.4.14",
+    "babel-jest": "^29.4.1",
+    "cypress": "^12.2.0",
+    "eslint": "~8.15.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "jest": "^29.4.1",
+    "jest-environment-jsdom": "^29.4.1",
+    "jsdom": "~20.0.3",
+    "nx": "15.9.7",
+    "postcss": "^8.4.21",
+    "prettier": "^2.6.2",
+    "react-refresh": "^0.10.0",
+    "react-test-renderer": "18.2.0",
+    "sass": "^1.55.0",
+    "swc-loader": "0.1.15",
+    "tailwindcss": "^3.2.7",
+    "ts-jest": "^29.0.5",
+    "ts-node": "10.9.1",
+    "typescript": "~4.9.5",
+    "url-loader": "^4.1.1",
+    "vite": "^4.0.1",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-pwa": "^0.14.1",
+    "vite-tsconfig-paths": "^4.0.2",
+    "vitest": "^0.25.8"
+  },
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "nodes": {
+    "client": {
+      "name": "client",
+      "type": "lib",
+      "data": {
+        "root": ".",
+        "sourceRoot": ".",
+        "projectType": "library",
+        "targets": {
+          "dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "dev"
+            }
+          },
+          "build": {
+            "outputs": [
+              "{projectRoot}/dist"
+            ],
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            }
+          },
+          "preview": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "preview"
+            }
+          },
+          "_build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "_build"
+            }
+          }
+        },
+        "implicitDependencies": [],
+        "tags": [],
+        "files": [
+          {
+            "file": ".devcontainer/devcontainer.json",
+            "hash": "3535166902491394186"
+          },
+          {
+            "file": ".devcontainer/docker-compose.yml",
+            "hash": "4249635585914078669"
+          },
+          {
+            "file": ".devcontainer/Dockerfile",
+            "hash": "9867853662483822169"
+          },
+          {
+            "file": ".env.example",
+            "hash": "63053509532782450"
+          },
+          {
+            "file": ".eslintignore",
+            "hash": "7663861978715868291"
+          },
+          {
+            "file": ".eslintrc.json",
+            "hash": "1659929058009100827"
+          },
+          {
+            "file": ".gitignore",
+            "hash": "5349087498021317679"
+          },
+          {
+            "file": ".nx/cache/lockfile.hash",
+            "hash": "1482621466223363832"
+          },
+          {
+            "file": ".nx/cache/nxdeps.json",
+            "hash": "14761183051332320413"
+          },
+          {
+            "file": ".prettierignore",
+            "hash": "8865097869854018350"
+          },
+          {
+            "file": ".prettierrc",
+            "hash": "16267754514737964994"
+          },
+          {
+            "file": "babel.config.json",
+            "hash": "5546405625092116747"
+          },
+          {
+            "file": "dev-dist/registerSW.js",
+            "hash": "15202341917943095419"
+          },
+          {
+            "file": "dev-dist/sw.js",
+            "hash": "7223701658027598256"
+          },
+          {
+            "file": "dev-dist/workbox-6e567876.js",
+            "hash": "16912368605902786274"
+          },
+          {
+            "file": "dev-dist/workbox-a98d86a7.js",
+            "hash": "2136383039944123185"
+          },
+          {
+            "file": "favicon.ico",
+            "hash": "14851013190988406799"
+          },
+          {
+            "file": "index.html",
+            "hash": "16643102953733270266"
+          },
+          {
+            "file": "jest.config.ts",
+            "hash": "2950215254536237782",
+            "dependencies": [
+              {
+                "target": "npm:@nrwl/jest",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "jest.preset.js",
+            "hash": "2772139696069860212",
+            "dependencies": [
+              {
+                "target": "npm:@nrwl/jest",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "logo.png",
+            "hash": "14887288397431762726"
+          },
+          {
+            "file": "nx.json",
+            "hash": "8430863198579134912"
+          },
+          {
+            "file": "package.json",
+            "hash": "584966710008051852",
+            "dependencies": [
+              {
+                "source": "client",
+                "target": "npm:@heroicons/react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@reduxjs/toolkit",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:axios",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:axios-auth-refresh",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:dotenv",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:formik",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:mapbox-gl",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react-dom",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react-map-gl",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react-redux",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react-router-dom",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:redux-persist",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:tslib",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:uuid",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:yup",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@babel/preset-react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/cypress",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/eslint-plugin-nx",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/jest",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/js",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/linter",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/vite",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/webpack",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@nrwl/workspace",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@pmmmwh/react-refresh-webpack-plugin",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@svgr/webpack",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@swc/core",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@testing-library/react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/jest",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/mapbox-gl",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/node",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/react-dom",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/react-router-dom",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@types/uuid",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@typescript-eslint/eslint-plugin",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@typescript-eslint/parser",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@vitejs/plugin-react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@vitest/coverage-c8",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:@vitest/ui",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:autoprefixer",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:babel-jest",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:cypress",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint-config-prettier",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint-plugin-cypress",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint-plugin-import",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint-plugin-jsx-a11y",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint-plugin-react",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:eslint-plugin-react-hooks",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:jest",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:jest-environment-jsdom",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:jsdom",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:nx",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:postcss",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:prettier",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react-refresh",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:react-test-renderer",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:sass",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:swc-loader",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:tailwindcss",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:ts-jest",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:ts-node",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:typescript",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:url-loader",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:vite",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:vite-plugin-eslint",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:vite-plugin-pwa",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:vite-tsconfig-paths",
+                "type": "static"
+              },
+              {
+                "source": "client",
+                "target": "npm:vitest",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "postcss.config.cjs",
+            "hash": "1579725330904862112"
+          },
+          {
+            "file": "public/icons/manifest-icon-144.maskable.png",
+            "hash": "14225205037586509588"
+          },
+          {
+            "file": "public/icons/manifest-icon-192.maskable.png",
+            "hash": "7629297416351310426"
+          },
+          {
+            "file": "public/icons/manifest-icon-512.maskable.png",
+            "hash": "13474725313599549329"
+          },
+          {
+            "file": "src/App.tsx",
+            "hash": "4221565867492333225",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/button/button.tsx",
+            "hash": "11464218646513187876",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/button/index.ts",
+            "hash": "4878098704980760223"
+          },
+          {
+            "file": "src/components/error/error.tsx",
+            "hash": "16172413050546046825",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/error/index.ts",
+            "hash": "17941352382214026947"
+          },
+          {
+            "file": "src/components/install-pwa/index.ts",
+            "hash": "10836441941113641372"
+          },
+          {
+            "file": "src/components/install-pwa/install.tsx",
+            "hash": "8196873860667852246",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/loading/index.ts",
+            "hash": "7101181655328957694"
+          },
+          {
+            "file": "src/components/loading/loading-spinner.tsx",
+            "hash": "4450470556415551438",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/pagination/index.ts",
+            "hash": "7572948234325060418"
+          },
+          {
+            "file": "src/components/pagination/pagination.tsx",
+            "hash": "7133636226695482778",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/theme/index.ts",
+            "hash": "15178725942060605442"
+          },
+          {
+            "file": "src/components/theme/theme.tsx",
+            "hash": "11410129697460214623",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/components/theme/use-theme.ts",
+            "hash": "4984146960638843724",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/components/index.ts",
+            "hash": "4898633918154253016"
+          },
+          {
+            "file": "src/features/auth/components/login-form.tsx",
+            "hash": "16161253714883447819",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:formik",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:yup",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/components/profile-dashboard.tsx",
+            "hash": "17960002683813207896",
+            "dependencies": [
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/components/protected.tsx",
+            "hash": "14845042894063645489",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/components/register-form.tsx",
+            "hash": "4254563049449080777",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:formik",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:yup",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/services/auth.service.ts",
+            "hash": "17760357811356870622",
+            "dependencies": [
+              {
+                "target": "npm:axios",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/services/index.ts",
+            "hash": "15853768214166025652"
+          },
+          {
+            "file": "src/features/auth/store/auth.slice.ts",
+            "hash": "10570024031995646704",
+            "dependencies": [
+              {
+                "target": "npm:@reduxjs/toolkit",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/auth/store/index.ts",
+            "hash": "9100142543328128112"
+          },
+          {
+            "file": "src/features/auth/types/index.ts",
+            "hash": "15974348001551448679"
+          },
+          {
+            "file": "src/features/bookmark/components/bookmark-list.tsx",
+            "hash": "910258036281436675",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/bookmark/components/index.ts",
+            "hash": "17788794983035648928"
+          },
+          {
+            "file": "src/features/bookmark/services/bookmark.service.ts",
+            "hash": "13854688469965102764",
+            "dependencies": [
+              {
+                "target": "npm:axios",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/bookmark/services/index.ts",
+            "hash": "12847726523201643036"
+          },
+          {
+            "file": "src/features/bookmark/store/bookmark.slice.ts",
+            "hash": "7305895377588246206",
+            "dependencies": [
+              {
+                "target": "npm:@reduxjs/toolkit",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/bookmark/store/index.ts",
+            "hash": "4226398366287807395"
+          },
+          {
+            "file": "src/features/bookmark/types/index.ts",
+            "hash": "6501546535265110753"
+          },
+          {
+            "file": "src/features/map/components/index.ts",
+            "hash": "4368598832933810695"
+          },
+          {
+            "file": "src/features/map/components/map-wrapper.tsx",
+            "hash": "6568261769901093637",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-map-gl",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/map/components/popup-dialog.tsx",
+            "hash": "3851007019693294432",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:uuid",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:yup",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:formik",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/map/services/index.ts",
+            "hash": "3528430529154761693"
+          },
+          {
+            "file": "src/features/map/services/place.service.ts",
+            "hash": "3721343528358970059",
+            "dependencies": [
+              {
+                "target": "npm:axios",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/map/store/index.ts",
+            "hash": "1062337190494473521"
+          },
+          {
+            "file": "src/features/map/store/place.slice.ts",
+            "hash": "8510763361891612681",
+            "dependencies": [
+              {
+                "target": "npm:@reduxjs/toolkit",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/map/types/index.ts",
+            "hash": "6991235221323928280"
+          },
+          {
+            "file": "src/features/notification/components/index.ts",
+            "hash": "8035234915953056735"
+          },
+          {
+            "file": "src/features/notification/components/notification-count.tsx",
+            "hash": "2251459403826700528",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/notification/components/notification-dropdown.tsx",
+            "hash": "15399406855460401742",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/notification/components/notification-wrapper.tsx",
+            "hash": "17117864421176789257",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/notification/services/index.ts",
+            "hash": "5276274007318503800"
+          },
+          {
+            "file": "src/features/notification/services/notification.service.ts",
+            "hash": "16744321841811846919",
+            "dependencies": [
+              {
+                "target": "npm:axios",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/notification/store/index.ts",
+            "hash": "10924272906151220980"
+          },
+          {
+            "file": "src/features/notification/store/notification.slice.ts",
+            "hash": "5063771395762678677",
+            "dependencies": [
+              {
+                "target": "npm:@reduxjs/toolkit",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/notification/types/index.ts",
+            "hash": "17513062070553789382"
+          },
+          {
+            "file": "src/features/trip/components/index.ts",
+            "hash": "6410752618411508522"
+          },
+          {
+            "file": "src/features/trip/components/trip-item.tsx",
+            "hash": "8941510711228652055",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:formik",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:yup",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/trip/components/trip-list.tsx",
+            "hash": "5519171495571791634",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/trip/services/index.ts",
+            "hash": "1634135786847908353"
+          },
+          {
+            "file": "src/features/trip/services/trip.service.ts",
+            "hash": "12542448881630156413",
+            "dependencies": [
+              {
+                "target": "npm:axios",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/trip/store/index.ts",
+            "hash": "2097607564654333646"
+          },
+          {
+            "file": "src/features/trip/store/trip.slice.ts",
+            "hash": "16680895083007902321",
+            "dependencies": [
+              {
+                "target": "npm:@reduxjs/toolkit",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/features/trip/types/index.ts",
+            "hash": "2311597477335691862"
+          },
+          {
+            "file": "src/index.css",
+            "hash": "7277166461450803896"
+          },
+          {
+            "file": "src/layouts/footer.tsx",
+            "hash": "2782051201273834931",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/layouts/header.tsx",
+            "hash": "8266417811567975907",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/layouts/navbar/index.ts",
+            "hash": "14833798892539923450"
+          },
+          {
+            "file": "src/layouts/navbar/navbar-item.tsx",
+            "hash": "4050121338646709882",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/layouts/navbar/navbar-wrapper.tsx",
+            "hash": "5664826742253525099",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:@heroicons/react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/main.tsx",
+            "hash": "2196879679754422996",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-redux",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:redux-persist",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/bookmark.tsx",
+            "hash": "16716413817866744315",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/login.tsx",
+            "hash": "8951260648725377792",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/map.tsx",
+            "hash": "8317358777685235815",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/page-not-found.tsx",
+            "hash": "6486902245394887747",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/profile.tsx",
+            "hash": "5848507700596159100",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/register.tsx",
+            "hash": "8401059322928050583",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/settings.tsx",
+            "hash": "12093460128449653337",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/pages/trip.tsx",
+            "hash": "6044587468726417579",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-router-dom",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/providers/index.ts",
+            "hash": "449234511048831199"
+          },
+          {
+            "file": "src/providers/notification-listener.tsx",
+            "hash": "4854217771094920955",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/react-app-env.d.ts",
+            "hash": "11053321315444823231",
+            "dependencies": [
+              {
+                "target": "npm:react",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/routes.tsx",
+            "hash": "1131218608073146725"
+          },
+          {
+            "file": "src/services/api.ts",
+            "hash": "2695460524896755705",
+            "dependencies": [
+              {
+                "target": "npm:axios",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:axios-auth-refresh",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/store/index.ts",
+            "hash": "18007395590115522165"
+          },
+          {
+            "file": "src/store/store.ts",
+            "hash": "16092720897980849060",
+            "dependencies": [
+              {
+                "target": "npm:@reduxjs/toolkit",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:react-redux",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:redux-persist",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "src/types/base.ts",
+            "hash": "4367925828739379074"
+          },
+          {
+            "file": "src/types/index.ts",
+            "hash": "6212031935963748063"
+          },
+          {
+            "file": "src/types/pagination.ts",
+            "hash": "4960389063492929495"
+          },
+          {
+            "file": "src/types/route.ts",
+            "hash": "2993832478280183838"
+          },
+          {
+            "file": "tailwind.config.cjs",
+            "hash": "12826974720336312517"
+          },
+          {
+            "file": "tsconfig.base.json",
+            "hash": "1160218794111340553"
+          },
+          {
+            "file": "tsconfig.json",
+            "hash": "13035355874121220863"
+          },
+          {
+            "file": "tsconfig.node.json",
+            "hash": "5320229625562728332"
+          },
+          {
+            "file": "vite.config.ts",
+            "hash": "6249032150118249094",
+            "dependencies": [
+              {
+                "target": "npm:@vitejs/plugin-react",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:vite",
+                "source": "client",
+                "type": "static"
+              },
+              {
+                "target": "npm:vite-plugin-pwa",
+                "source": "client",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "yarn.lock",
+            "hash": "16939354054644547758"
+          }
+        ]
+      }
+    },
+    "traveler-e2e": {
+      "name": "traveler-e2e",
+      "type": "e2e",
+      "data": {
+        "name": "traveler-e2e",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/traveler-e2e/src",
+        "projectType": "application",
+        "targets": {
+          "e2e": {
+            "executor": "@nrwl/cypress:cypress",
+            "options": {
+              "cypressConfig": "apps/traveler-e2e/cypress.config.ts",
+              "devServerTarget": "traveler:serve:development",
+              "testingType": "e2e"
+            },
+            "configurations": {
+              "production": {
+                "devServerTarget": "traveler:serve:production"
+              },
+              "ci": {
+                "devServerTarget": "traveler:serve-static"
+              }
+            }
+          },
+          "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "apps/traveler-e2e/**/*.{js,ts}"
+              ]
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": [
+          "traveler"
+        ],
+        "root": "apps/traveler-e2e",
+        "files": [
+          {
+            "file": "apps/traveler-e2e/.eslintrc.json",
+            "hash": "14060216369337943343"
+          },
+          {
+            "file": "apps/traveler-e2e/cypress.config.ts",
+            "hash": "16207093801428381492",
+            "dependencies": [
+              {
+                "source": "traveler-e2e",
+                "target": "npm:cypress",
+                "type": "static"
+              },
+              {
+                "source": "traveler-e2e",
+                "target": "npm:@nrwl/cypress",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "apps/traveler-e2e/project.json",
+            "hash": "1298477133679565237"
+          },
+          {
+            "file": "apps/traveler-e2e/src/e2e/app.cy.ts",
+            "hash": "17369528638154339920"
+          },
+          {
+            "file": "apps/traveler-e2e/src/fixtures/example.json",
+            "hash": "11614668686582597233"
+          },
+          {
+            "file": "apps/traveler-e2e/src/support/app.po.ts",
+            "hash": "11157016311132186162"
+          },
+          {
+            "file": "apps/traveler-e2e/src/support/commands.ts",
+            "hash": "7314691991044890572"
+          },
+          {
+            "file": "apps/traveler-e2e/src/support/e2e.ts",
+            "hash": "3666078656922506009"
+          },
+          {
+            "file": "apps/traveler-e2e/tsconfig.json",
+            "hash": "1788248097864730386"
+          }
+        ]
+      }
+    },
+    "traveler": {
+      "name": "traveler",
+      "type": "app",
+      "data": {
+        "name": "traveler",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/traveler/src",
+        "projectType": "application",
+        "targets": {
+          "build": {
+            "executor": "@nrwl/vite:build",
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+              "outputPath": "dist/apps/traveler"
+            },
+            "configurations": {
+              "development": {
+                "mode": "development"
+              },
+              "production": {
+                "mode": "production"
+              }
+            }
+          },
+          "serve": {
+            "executor": "@nrwl/vite:dev-server",
+            "defaultConfiguration": "development",
+            "options": {
+              "buildTarget": "traveler:build"
+            },
+            "configurations": {
+              "development": {
+                "buildTarget": "traveler:build:development",
+                "hmr": true
+              },
+              "production": {
+                "buildTarget": "traveler:build:production",
+                "hmr": false
+              }
+            }
+          },
+          "preview": {
+            "executor": "@nrwl/vite:preview-server",
+            "defaultConfiguration": "development",
+            "options": {
+              "buildTarget": "traveler:build"
+            },
+            "configurations": {
+              "development": {
+                "buildTarget": "traveler:build:development"
+              },
+              "production": {
+                "buildTarget": "traveler:build:production"
+              }
+            }
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^default"
+            ],
+            "executor": "@nrwl/vite:test",
+            "outputs": [
+              "coverage/apps/traveler"
+            ],
+            "options": {
+              "passWithNoTests": true,
+              "reportsDirectory": "../../coverage/apps/traveler"
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "apps/traveler/**/*.{ts,tsx,js,jsx}"
+              ]
+            }
+          },
+          "serve-static": {
+            "executor": "@nrwl/web:file-server",
+            "options": {
+              "buildTarget": "traveler:build"
+            }
+          }
+        },
+        "tags": [],
+        "root": "apps/traveler",
+        "implicitDependencies": [],
+        "files": [
+          {
+            "file": "apps/traveler/.eslintrc.json",
+            "hash": "10075191527724852300"
+          },
+          {
+            "file": "apps/traveler/index.html",
+            "hash": "14239179427363857657"
+          },
+          {
+            "file": "apps/traveler/project.json",
+            "hash": "14228511258841659186"
+          },
+          {
+            "file": "apps/traveler/public/favicon.ico",
+            "hash": "9303420814833116677"
+          },
+          {
+            "file": "apps/traveler/src/app/app.module.scss",
+            "hash": "8887387885984320532"
+          },
+          {
+            "file": "apps/traveler/src/app/app.spec.tsx",
+            "hash": "2009998856807196799",
+            "dependencies": [
+              {
+                "source": "traveler",
+                "target": "npm:@testing-library/react",
+                "type": "static"
+              },
+              {
+                "source": "traveler",
+                "target": "npm:react-router-dom",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "apps/traveler/src/app/app.tsx",
+            "hash": "5782630340269975769",
+            "dependencies": [
+              {
+                "source": "traveler",
+                "target": "npm:react-router-dom",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "apps/traveler/src/app/nx-welcome.tsx",
+            "hash": "13945099651165197702"
+          },
+          {
+            "file": "apps/traveler/src/assets/.gitkeep",
+            "hash": "3244421341483603138"
+          },
+          {
+            "file": "apps/traveler/src/main.tsx",
+            "hash": "763379880219152615",
+            "dependencies": [
+              {
+                "source": "traveler",
+                "target": "npm:react",
+                "type": "static"
+              },
+              {
+                "source": "traveler",
+                "target": "npm:react-dom",
+                "type": "static"
+              },
+              {
+                "source": "traveler",
+                "target": "npm:react-router-dom",
+                "type": "static"
+              }
+            ]
+          },
+          {
+            "file": "apps/traveler/src/styles.scss",
+            "hash": "5195668842064076916"
+          },
+          {
+            "file": "apps/traveler/tsconfig.app.json",
+            "hash": "15470670433496661247"
+          },
+          {
+            "file": "apps/traveler/tsconfig.json",
+            "hash": "11166545116916107487"
+          },
+          {
+            "file": "apps/traveler/tsconfig.spec.json",
+            "hash": "10107240882214166991"
+          },
+          {
+            "file": "apps/traveler/vite.config.ts",
+            "hash": "17009001978929454389",
+            "dependencies": [
+              {
+                "source": "traveler",
+                "target": "npm:vite",
+                "type": "static"
+              },
+              {
+                "source": "traveler",
+                "target": "npm:@vitejs/plugin-react",
+                "type": "static"
+              },
+              {
+                "source": "traveler",
+                "target": "npm:vite-tsconfig-paths",
+                "type": "static"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "externalNodes": {
+    "npm:@heroicons/react": {
+      "type": "npm",
+      "name": "npm:@heroicons/react",
+      "data": {
+        "version": "^2.0.16",
+        "packageName": "@heroicons/react",
+        "hash": "8c6ffc28ea9f7000abf17ef0a77238302950ed0b1627aba04fdba3c99c69f9c5"
+      }
+    },
+    "npm:@reduxjs/toolkit": {
+      "type": "npm",
+      "name": "npm:@reduxjs/toolkit",
+      "data": {
+        "version": "^1.9.3",
+        "packageName": "@reduxjs/toolkit",
+        "hash": "04fbec8710c9cba1fa7287664178a879f7ca80882cc99af6052206cf02f07b2c"
+      }
+    },
+    "npm:axios": {
+      "type": "npm",
+      "name": "npm:axios",
+      "data": {
+        "version": "^1.3.5",
+        "packageName": "axios",
+        "hash": "aac8b6cb1e6b0cab4d99f5fb7f12dce099f573d7ef69750ca23aa273ed77202d"
+      }
+    },
+    "npm:axios-auth-refresh": {
+      "type": "npm",
+      "name": "npm:axios-auth-refresh",
+      "data": {
+        "version": "^3.3.6",
+        "packageName": "axios-auth-refresh",
+        "hash": "d81df453b4e62f5a98b0d34ed7bb5a838e0adbf9f2d8975941f4769f1c574d5b"
+      }
+    },
+    "npm:dotenv": {
+      "type": "npm",
+      "name": "npm:dotenv",
+      "data": {
+        "version": "^16.0.3",
+        "packageName": "dotenv",
+        "hash": "810d46a3b671b46ee95f9373971ea42e0c0f6f24bef4ce072af2718a267d2bc9"
+      }
+    },
+    "npm:formik": {
+      "type": "npm",
+      "name": "npm:formik",
+      "data": {
+        "version": "^2.2.9",
+        "packageName": "formik",
+        "hash": "d50eaf5eb11b32d1e5db73741ae58a01d1c820c4f13a8bc37f98cfa8589557fd"
+      }
+    },
+    "npm:mapbox-gl": {
+      "type": "npm",
+      "name": "npm:mapbox-gl",
+      "data": {
+        "version": "^2.14.1",
+        "packageName": "mapbox-gl",
+        "hash": "11b5ce9641393f4c1d6cc6b81670ef82fcb550778538ad35a3b88e55afc277b8"
+      }
+    },
+    "npm:react": {
+      "type": "npm",
+      "name": "npm:react",
+      "data": {
+        "version": "^18.2.0",
+        "packageName": "react",
+        "hash": "92b01f5516e06d53100980cb7d4439151a20e4997143b30947f8088d8cf6c874"
+      }
+    },
+    "npm:react-dom": {
+      "type": "npm",
+      "name": "npm:react-dom",
+      "data": {
+        "version": "^18.2.0",
+        "packageName": "react-dom",
+        "hash": "a8418bb917ff3ee0e5b0a9d82e5d118077cc6787486fb6dc4fe31ffca530dd47"
+      }
+    },
+    "npm:react-map-gl": {
+      "type": "npm",
+      "name": "npm:react-map-gl",
+      "data": {
+        "version": "^7.0.21",
+        "packageName": "react-map-gl",
+        "hash": "aa0e424589ac883a94113999f6895de402463daef27636eada13b02b31b95e0f"
+      }
+    },
+    "npm:react-redux": {
+      "type": "npm",
+      "name": "npm:react-redux",
+      "data": {
+        "version": "^8.0.5",
+        "packageName": "react-redux",
+        "hash": "38d0ab260d04fdb10e280b8fed8139e19dbfa2e03d11dba75cfb60d9f1016595"
+      }
+    },
+    "npm:react-router-dom": {
+      "type": "npm",
+      "name": "npm:react-router-dom",
+      "data": {
+        "version": "^6.9.0",
+        "packageName": "react-router-dom",
+        "hash": "2ee58b288983e3969816996ab0ced507402471a8e64235545eae9529408ddeb4"
+      }
+    },
+    "npm:redux-persist": {
+      "type": "npm",
+      "name": "npm:redux-persist",
+      "data": {
+        "version": "^6.0.0",
+        "packageName": "redux-persist",
+        "hash": "e672ef54952b42700a7921705ebb5cb128bdfe4e9cdd5655cc1967383d4e5e34"
+      }
+    },
+    "npm:tslib": {
+      "type": "npm",
+      "name": "npm:tslib",
+      "data": {
+        "version": "^2.3.0",
+        "packageName": "tslib",
+        "hash": "a33e74687104ec3eee715b3039ada1f6fc526a5dbb18f125cfc6c30497bfe2b7"
+      }
+    },
+    "npm:uuid": {
+      "type": "npm",
+      "name": "npm:uuid",
+      "data": {
+        "version": "^9.0.0",
+        "packageName": "uuid",
+        "hash": "1a43216f970a5d0a9f1194de86c50110ea674c8d4c92f0a9549f072ddcf81968"
+      }
+    },
+    "npm:yup": {
+      "type": "npm",
+      "name": "npm:yup",
+      "data": {
+        "version": "^1.1.1",
+        "packageName": "yup",
+        "hash": "ddbe3c3548d19ab28662223b4670ef716f06d4d370c593152afdb65626699b04"
+      }
+    },
+    "npm:@babel/preset-react": {
+      "type": "npm",
+      "name": "npm:@babel/preset-react",
+      "data": {
+        "version": "^7.14.5",
+        "packageName": "@babel/preset-react",
+        "hash": "ffe30beefd9c64b1432fa6cef7e90109d95d0ec69c3899768ebbabe12c246a48"
+      }
+    },
+    "npm:@nrwl/cypress": {
+      "type": "npm",
+      "name": "npm:@nrwl/cypress",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/cypress",
+        "hash": "132336ad54a39093a1f4ad028acd9801c3bb27ffa5a4b200b3fe3f78df33460e"
+      }
+    },
+    "npm:@nrwl/eslint-plugin-nx": {
+      "type": "npm",
+      "name": "npm:@nrwl/eslint-plugin-nx",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/eslint-plugin-nx",
+        "hash": "5e82ccaed27db6188c16db57cc9b243e4d1de6d9939f3ab9aab6c051f257cd32"
+      }
+    },
+    "npm:@nrwl/jest": {
+      "type": "npm",
+      "name": "npm:@nrwl/jest",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/jest",
+        "hash": "f0f9c2b95578449ec3638000657c4e739a731558823cba885dbfaeb8c3202352"
+      }
+    },
+    "npm:@nrwl/js": {
+      "type": "npm",
+      "name": "npm:@nrwl/js",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/js",
+        "hash": "c75b1f079287ec7bd238369726dc2941da77fead5a6aea4d9a6a66ea6ac0c727"
+      }
+    },
+    "npm:@nrwl/linter": {
+      "type": "npm",
+      "name": "npm:@nrwl/linter",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/linter",
+        "hash": "9074d649d33e34a4a648da72b16afa3d048086aee9ee1cced91ee693db201e89"
+      }
+    },
+    "npm:@nrwl/react": {
+      "type": "npm",
+      "name": "npm:@nrwl/react",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/react",
+        "hash": "8343cb4906492e5840089c4fda8183c6bc00de419702e235964a54d05f600cca"
+      }
+    },
+    "npm:@nrwl/vite": {
+      "type": "npm",
+      "name": "npm:@nrwl/vite",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/vite",
+        "hash": "dfd17cf58882550dfc1106c5d587bd23b446b2e085cfe38e2e0af497df6aa695"
+      }
+    },
+    "npm:@nrwl/webpack": {
+      "type": "npm",
+      "name": "npm:@nrwl/webpack",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/webpack",
+        "hash": "ad330414e79c533c6bb74a7d7f11aa408b0833f920ab4fc89548c2536d397c03"
+      }
+    },
+    "npm:@nrwl/workspace": {
+      "type": "npm",
+      "name": "npm:@nrwl/workspace",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "@nrwl/workspace",
+        "hash": "97fd2b8ee1f75b0f86c1e6398dd23afc66d415dfdd90530f285515547ef2d3e0"
+      }
+    },
+    "npm:@pmmmwh/react-refresh-webpack-plugin": {
+      "type": "npm",
+      "name": "npm:@pmmmwh/react-refresh-webpack-plugin",
+      "data": {
+        "version": "^0.5.7",
+        "packageName": "@pmmmwh/react-refresh-webpack-plugin",
+        "hash": "4919ec141c94851f0a86c0ca7e1f616a7c440fe43c42441ea69c4a4ca18f1702"
+      }
+    },
+    "npm:@svgr/webpack": {
+      "type": "npm",
+      "name": "npm:@svgr/webpack",
+      "data": {
+        "version": "^6.1.2",
+        "packageName": "@svgr/webpack",
+        "hash": "f8686320e57f6456040dd2c7b7b00039e9d69baf701c9c1cb445f7a71e7832c1"
+      }
+    },
+    "npm:@testing-library/react": {
+      "type": "npm",
+      "name": "npm:@testing-library/react",
+      "data": {
+        "version": "14.0.0",
+        "packageName": "@testing-library/react",
+        "hash": "f17e86bb9f8b57cae075939886ce407efc48aca72d269962e0d9aed92fbc192a"
+      }
+    },
+    "npm:@types/jest": {
+      "type": "npm",
+      "name": "npm:@types/jest",
+      "data": {
+        "version": "^29.4.0",
+        "packageName": "@types/jest",
+        "hash": "90eee2ce66d772ca89d6d89276dc58aaa3367a5abeacef95657ac797f2b654e7"
+      }
+    },
+    "npm:@types/mapbox-gl": {
+      "type": "npm",
+      "name": "npm:@types/mapbox-gl",
+      "data": {
+        "version": "^2.7.10",
+        "packageName": "@types/mapbox-gl",
+        "hash": "53154b672f71e9beb2b6951d3d989c75b7cd808b68ca568067a1a236d6eca820"
+      }
+    },
+    "npm:@types/node": {
+      "type": "npm",
+      "name": "npm:@types/node",
+      "data": {
+        "version": "18.14.2",
+        "packageName": "@types/node",
+        "hash": "81de8f8549b3f0b7e90d8a958bd8c1600cb6a84922beb7ef9e2e354701d3d45c"
+      }
+    },
+    "npm:@types/react": {
+      "type": "npm",
+      "name": "npm:@types/react",
+      "data": {
+        "version": "18.0.28",
+        "packageName": "@types/react",
+        "hash": "07a40125cf1476694a540d4937fa8b2bbdef18ee54ed8451fc3c4fdc99157b14"
+      }
+    },
+    "npm:@types/react-dom": {
+      "type": "npm",
+      "name": "npm:@types/react-dom",
+      "data": {
+        "version": "18.0.11",
+        "packageName": "@types/react-dom",
+        "hash": "028ca82d6d312c985ee7a71d103a0acc7100d5462449671f0891c55e15fac879"
+      }
+    },
+    "npm:@types/react-router-dom": {
+      "type": "npm",
+      "name": "npm:@types/react-router-dom",
+      "data": {
+        "version": "5.3.3",
+        "packageName": "@types/react-router-dom",
+        "hash": "7f602dda0f5eae30816df03c3c5efaffa3fc47b7993e81c6092507a0460cc81b"
+      }
+    },
+    "npm:@types/uuid": {
+      "type": "npm",
+      "name": "npm:@types/uuid",
+      "data": {
+        "version": "^9.0.1",
+        "packageName": "@types/uuid",
+        "hash": "47ba1bf36f37e904158195f123d613ea235ab443d735e00654d69403736aa149"
+      }
+    },
+    "npm:@typescript-eslint/eslint-plugin": {
+      "type": "npm",
+      "name": "npm:@typescript-eslint/eslint-plugin",
+      "data": {
+        "version": "^5.36.1",
+        "packageName": "@typescript-eslint/eslint-plugin",
+        "hash": "e9039de367b54504ff3d9fe2eab03c4ac46c442e078f1e9f03b7b565dfd1c578"
+      }
+    },
+    "npm:@typescript-eslint/parser": {
+      "type": "npm",
+      "name": "npm:@typescript-eslint/parser",
+      "data": {
+        "version": "^5.36.1",
+        "packageName": "@typescript-eslint/parser",
+        "hash": "fc1327b09191c166ec06d88fce405d974d5c0dfc900e0db277ec02981b770f25"
+      }
+    },
+    "npm:@vitejs/plugin-react": {
+      "type": "npm",
+      "name": "npm:@vitejs/plugin-react",
+      "data": {
+        "version": "^3.0.0",
+        "packageName": "@vitejs/plugin-react",
+        "hash": "3e5295e74cd9bcf6b53af4c4e6a8f72fe2d5e82360f63283677f64e7e2bf68ad"
+      }
+    },
+    "npm:autoprefixer": {
+      "type": "npm",
+      "name": "npm:autoprefixer",
+      "data": {
+        "version": "^10.4.14",
+        "packageName": "autoprefixer",
+        "hash": "d5acd9c3822bb713d128203e166e8859c61039415554daef5513183a9a006bc5"
+      }
+    },
+    "npm:babel-jest": {
+      "type": "npm",
+      "name": "npm:babel-jest",
+      "data": {
+        "version": "^29.4.1",
+        "packageName": "babel-jest",
+        "hash": "9cbc748088a031fda1f53dbd55332edc2de76fa03b8c948b2bcb3a488f380e61"
+      }
+    },
+    "npm:cypress": {
+      "type": "npm",
+      "name": "npm:cypress",
+      "data": {
+        "version": "^12.2.0",
+        "packageName": "cypress",
+        "hash": "e1423ef4f1ba4baeacf85cee00868273e39394d664bc5d51b0eea72375be8976"
+      }
+    },
+    "npm:eslint": {
+      "type": "npm",
+      "name": "npm:eslint",
+      "data": {
+        "version": "~8.15.0",
+        "packageName": "eslint",
+        "hash": "c3fc3110dbfbfaf413a8f013aa9425d4e587a31c00866508575ce8337e164293"
+      }
+    },
+    "npm:eslint-config-prettier": {
+      "type": "npm",
+      "name": "npm:eslint-config-prettier",
+      "data": {
+        "version": "8.1.0",
+        "packageName": "eslint-config-prettier",
+        "hash": "d3e9b67a7cfe7ef3591b6664ffb6b82f16125b94b210b3f4937b9d4e3ea07640"
+      }
+    },
+    "npm:eslint-plugin-cypress": {
+      "type": "npm",
+      "name": "npm:eslint-plugin-cypress",
+      "data": {
+        "version": "^2.10.3",
+        "packageName": "eslint-plugin-cypress",
+        "hash": "28ada4da52fb11ee58ee308bb1a7a0746a7321ab74e3ee4eb2afb0825d088fb1"
+      }
+    },
+    "npm:eslint-plugin-import": {
+      "type": "npm",
+      "name": "npm:eslint-plugin-import",
+      "data": {
+        "version": "2.27.5",
+        "packageName": "eslint-plugin-import",
+        "hash": "a58144644ca8f7a1065cb36a1880d7d4ccf6520d49e7fa9f592abc8aeea6fd7a"
+      }
+    },
+    "npm:eslint-plugin-jsx-a11y": {
+      "type": "npm",
+      "name": "npm:eslint-plugin-jsx-a11y",
+      "data": {
+        "version": "6.7.1",
+        "packageName": "eslint-plugin-jsx-a11y",
+        "hash": "46c9095cc1fec3245a2667f53eecea415ae7750593c32f212e0d61dc75df1178"
+      }
+    },
+    "npm:eslint-plugin-react": {
+      "type": "npm",
+      "name": "npm:eslint-plugin-react",
+      "data": {
+        "version": "7.32.2",
+        "packageName": "eslint-plugin-react",
+        "hash": "ea19ad52b1da74d67d8d4f8e5d9afa41959a34b834c39ec73d9bc543566625c6"
+      }
+    },
+    "npm:eslint-plugin-react-hooks": {
+      "type": "npm",
+      "name": "npm:eslint-plugin-react-hooks",
+      "data": {
+        "version": "4.6.0",
+        "packageName": "eslint-plugin-react-hooks",
+        "hash": "c2f6ffe183e898cd075be78751981d6b0b4710857a6696a5ea029fb733e5afe3"
+      }
+    },
+    "npm:jest": {
+      "type": "npm",
+      "name": "npm:jest",
+      "data": {
+        "version": "^29.4.1",
+        "packageName": "jest",
+        "hash": "3af3b487c7eed4bc28feab196619415910ede8050371b0702f9ac53ac3475048"
+      }
+    },
+    "npm:jest-environment-jsdom": {
+      "type": "npm",
+      "name": "npm:jest-environment-jsdom",
+      "data": {
+        "version": "^29.4.1",
+        "packageName": "jest-environment-jsdom",
+        "hash": "0fb4564d950f26460d48e380a696ef98c50cab179bdedbc142a9cc19d1eed823"
+      }
+    },
+    "npm:nx": {
+      "type": "npm",
+      "name": "npm:nx",
+      "data": {
+        "version": "15.9.7",
+        "packageName": "nx",
+        "hash": "5252dae2e24e550df00a1013512440b4c922fa490b8b86eae5cb6e601716dc01"
+      }
+    },
+    "npm:postcss": {
+      "type": "npm",
+      "name": "npm:postcss",
+      "data": {
+        "version": "^8.4.21",
+        "packageName": "postcss",
+        "hash": "e28a51da3fab8c34ba1cd05533e4181c444d42fbcde9321a7ec5b60a9a354820"
+      }
+    },
+    "npm:prettier": {
+      "type": "npm",
+      "name": "npm:prettier",
+      "data": {
+        "version": "^2.6.2",
+        "packageName": "prettier",
+        "hash": "edd656866e07e461bbb100c31431768bd26c2290760c79332661c6e4aa0cc7ca"
+      }
+    },
+    "npm:react-refresh": {
+      "type": "npm",
+      "name": "npm:react-refresh",
+      "data": {
+        "version": "^0.10.0",
+        "packageName": "react-refresh",
+        "hash": "f44e028987a77e164c0f059df6809b9fa718642ba03e66b01c97649d032fc35d"
+      }
+    },
+    "npm:react-test-renderer": {
+      "type": "npm",
+      "name": "npm:react-test-renderer",
+      "data": {
+        "version": "18.2.0",
+        "packageName": "react-test-renderer",
+        "hash": "98886c181b5ab5b1086d5d077a1509edc4ae212248d213d54f9cb9d075a5206a"
+      }
+    },
+    "npm:tailwindcss": {
+      "type": "npm",
+      "name": "npm:tailwindcss",
+      "data": {
+        "version": "^3.2.7",
+        "packageName": "tailwindcss",
+        "hash": "133a5715943266324c48e9158304c8a64346f701fa8b08c01d36df449147ba1f"
+      }
+    },
+    "npm:ts-jest": {
+      "type": "npm",
+      "name": "npm:ts-jest",
+      "data": {
+        "version": "^29.0.5",
+        "packageName": "ts-jest",
+        "hash": "38d8a1a23a062256ded01c065ef4bc33f7324fcc10de13131d6b86f322e6b715"
+      }
+    },
+    "npm:ts-node": {
+      "type": "npm",
+      "name": "npm:ts-node",
+      "data": {
+        "version": "10.9.1",
+        "packageName": "ts-node",
+        "hash": "9948e441d7a81407c49a16f09f63cb47b33f39f904aca2d55f060babe3dbd95f"
+      }
+    },
+    "npm:typescript": {
+      "type": "npm",
+      "name": "npm:typescript",
+      "data": {
+        "version": "~4.9.5",
+        "packageName": "typescript",
+        "hash": "cc481986085d372c898bbecaabafe3431da98239ba36bda989ff589044fe6f06"
+      }
+    },
+    "npm:url-loader": {
+      "type": "npm",
+      "name": "npm:url-loader",
+      "data": {
+        "version": "^4.1.1",
+        "packageName": "url-loader",
+        "hash": "4ec97d17fa07439855441020fb7bf4f1950b28d127a343f2fff54f6d79100794"
+      }
+    },
+    "npm:vite": {
+      "type": "npm",
+      "name": "npm:vite",
+      "data": {
+        "version": "^4.0.0",
+        "packageName": "vite",
+        "hash": "1b8bf107ca0b837806cf1add1cd02a00d3042e5f907735b0e9b52a9902a9daa8"
+      }
+    },
+    "npm:vite-plugin-pwa": {
+      "type": "npm",
+      "name": "npm:vite-plugin-pwa",
+      "data": {
+        "version": "^0.14.1",
+        "packageName": "vite-plugin-pwa",
+        "hash": "f47ed69b7c4e9e781e25cc2c9db67cf92317cf97f1a23ece9d97db14355ad1b2"
+      }
+    },
+    "npm:@swc/core": {
+      "type": "npm",
+      "name": "npm:@swc/core",
+      "data": {
+        "version": "^1.2.173",
+        "packageName": "@swc/core",
+        "hash": "afae236b1ecc5f350472cf179aecd445b11f944f3a21d05074f46c10a2b94d16"
+      }
+    },
+    "npm:@vitest/coverage-c8": {
+      "type": "npm",
+      "name": "npm:@vitest/coverage-c8",
+      "data": {
+        "version": "~0.25.8",
+        "packageName": "@vitest/coverage-c8",
+        "hash": "9e96bedcaf74a5b9f001ebdf794053f543ea4730f3ec959ca33a75ee01679c7e"
+      }
+    },
+    "npm:@vitest/ui": {
+      "type": "npm",
+      "name": "npm:@vitest/ui",
+      "data": {
+        "version": "^0.25.8",
+        "packageName": "@vitest/ui",
+        "hash": "f6608f422bb8a314708f3823b717f1c411c853087b171b884bfd785c152d3d82"
+      }
+    },
+    "npm:jsdom": {
+      "type": "npm",
+      "name": "npm:jsdom",
+      "data": {
+        "version": "~20.0.3",
+        "packageName": "jsdom",
+        "hash": "b2f8127f94755427d09a40e8855625ab245436ded40ab9c22432200e9617620c"
+      }
+    },
+    "npm:sass": {
+      "type": "npm",
+      "name": "npm:sass",
+      "data": {
+        "version": "^1.55.0",
+        "packageName": "sass",
+        "hash": "4de434bf71c081a343566b50a7e6cacb045ca158485987f05bd4d76ce4fee208"
+      }
+    },
+    "npm:swc-loader": {
+      "type": "npm",
+      "name": "npm:swc-loader",
+      "data": {
+        "version": "0.1.15",
+        "packageName": "swc-loader",
+        "hash": "eec1e496a25c7d3e1b7a5e128d35b2c1cc958d80b1c3b429618f3bc975ecdd55"
+      }
+    },
+    "npm:vite-plugin-eslint": {
+      "type": "npm",
+      "name": "npm:vite-plugin-eslint",
+      "data": {
+        "version": "^1.8.1",
+        "packageName": "vite-plugin-eslint",
+        "hash": "372ab7ccd151c3c01a067f5ce5baa21ce83941aebafd826cded85861221806fc"
+      }
+    },
+    "npm:vite-tsconfig-paths": {
+      "type": "npm",
+      "name": "npm:vite-tsconfig-paths",
+      "data": {
+        "version": "^4.0.2",
+        "packageName": "vite-tsconfig-paths",
+        "hash": "3ac25707f22182d1489796b6843fe7f7e1bac6ff0cc511a0128e33026b69bbc8"
+      }
+    },
+    "npm:vitest": {
+      "type": "npm",
+      "name": "npm:vitest",
+      "data": {
+        "version": "^0.25.8",
+        "packageName": "vitest",
+        "hash": "49a38b7a3db55f0cca9a07f3c24fbcc57de5bfddc9282b4dd71a7a0450375e3e"
+      }
+    }
+  },
+  "dependencies": {
+    "client": [
+      {
+        "source": "client",
+        "target": "npm:@nrwl/jest",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@heroicons/react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@reduxjs/toolkit",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:axios",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:axios-auth-refresh",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:dotenv",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:formik",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:mapbox-gl",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react-dom",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react-map-gl",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react-redux",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react-router-dom",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:redux-persist",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:tslib",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:uuid",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:yup",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@babel/preset-react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/cypress",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/eslint-plugin-nx",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/js",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/linter",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/vite",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/webpack",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@nrwl/workspace",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@pmmmwh/react-refresh-webpack-plugin",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@svgr/webpack",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@swc/core",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@testing-library/react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/jest",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/mapbox-gl",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/node",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/react-dom",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/react-router-dom",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@types/uuid",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@typescript-eslint/eslint-plugin",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@typescript-eslint/parser",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@vitejs/plugin-react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@vitest/coverage-c8",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:@vitest/ui",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:autoprefixer",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:babel-jest",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:cypress",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint-config-prettier",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint-plugin-cypress",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint-plugin-import",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint-plugin-jsx-a11y",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint-plugin-react",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:eslint-plugin-react-hooks",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:jest",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:jest-environment-jsdom",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:jsdom",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:nx",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:postcss",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:prettier",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react-refresh",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:react-test-renderer",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:sass",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:swc-loader",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:tailwindcss",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:ts-jest",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:ts-node",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:typescript",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:url-loader",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:vite",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:vite-plugin-eslint",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:vite-plugin-pwa",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:vite-tsconfig-paths",
+        "type": "static"
+      },
+      {
+        "source": "client",
+        "target": "npm:vitest",
+        "type": "static"
+      }
+    ],
+    "traveler-e2e": [
+      {
+        "source": "traveler-e2e",
+        "target": "traveler",
+        "type": "implicit"
+      },
+      {
+        "source": "traveler-e2e",
+        "target": "npm:cypress",
+        "type": "static"
+      },
+      {
+        "source": "traveler-e2e",
+        "target": "npm:@nrwl/cypress",
+        "type": "static"
+      }
+    ],
+    "traveler": [
+      {
+        "source": "traveler",
+        "target": "npm:@testing-library/react",
+        "type": "static"
+      },
+      {
+        "source": "traveler",
+        "target": "npm:react-router-dom",
+        "type": "static"
+      },
+      {
+        "source": "traveler",
+        "target": "npm:react",
+        "type": "static"
+      },
+      {
+        "source": "traveler",
+        "target": "npm:react-dom",
+        "type": "static"
+      },
+      {
+        "source": "traveler",
+        "target": "npm:vite",
+        "type": "static"
+      },
+      {
+        "source": "traveler",
+        "target": "npm:@vitejs/plugin-react",
+        "type": "static"
+      },
+      {
+        "source": "traveler",
+        "target": "npm:vite-tsconfig-paths",
+        "type": "static"
+      }
+    ]
+  }
+}
