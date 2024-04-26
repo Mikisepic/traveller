@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   traveller_dev:
@@ -28,7 +28,7 @@ services:
     ports:
       - 4200:4200
     volumes:
-      - ..:/workspace
+      - ../client:/workspace
       - node-modules:/workspace/client/node_modules
 
 volumes:
